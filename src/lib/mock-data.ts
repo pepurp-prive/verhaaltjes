@@ -28,7 +28,7 @@ export const mockCharacters: Character[] = [
     imageHint: 'male portrait',
     iconBgClass: 'bg-blue-100 dark:bg-blue-900/50',
     iconTextClass: 'text-blue-700 dark:text-blue-300',
-    description: 'Jan van der Meer is een 32-jarige softwareontwikkelaar uit Utrecht. Met een lengte van 1,85 m en een atletische bouw heeft hij een zelfverzekerde uitstraling. Zijn korte, bruine haar en blauwe ogen worden gecomplementeerd door een permanente stoppelbaard. Meestal is hij casual gekleed in een t-shirt en jeans met sneakers. Zijn rustige en analytische persoonlijkheid verbergt een scherpe, droge humor. Hij is een loyale vriend, gedreven door logica en een passie voor het oplossen van complexe problemen. In zijn vrije tijd werkt hij aan een geavanceerd AI-project, een passie die voortkomt uit zijn jeugd in een klein dorp en zijn fascinatie voor de grenzen van technologie.'
+    description: 'Jan van der Meer, een 32-jarige softwareontwikkelaar uit Utrecht, is een man die rust en zelfverzekerdheid uitstraalt. Met een atletische bouw en een lengte van 1.85 meter heeft hij een krachtige aanwezigheid. Zijn korte, bruine haar en helderblauwe ogen geven hem een open en benaderbare blik, die wordt versterkt door een permanente, verzorgde stoppelbaard. Zijn kledingstijl is overwegend casual, meestal bestaande uit een goed passend T-shirt, een donkere jeans en moderne sneakers. Qua persoonlijkheid is Jan rustig en analytisch, met een scherp, droog gevoel voor humor dat hij alleen deelt met mensen die hij vertrouwt. Zijn logische denkwijze en passie voor het oplossen van complexe puzzels maken hem tot een gedreven ontwikkelaar. Hij groeide op in een klein dorp, maar vond zijn plek in de stad, waar hij nu werkt aan een grensverleggend AI-project. Ondanks zijn soms introverte aard is hij een zeer loyale vriend en de onbetwiste protagonist van zijn eigen verhaal.'
   },
   {
     id: '2',
@@ -54,7 +54,11 @@ export const mockCharacters: Character[] = [
     breastsShape: 'Natuurlijk',
     buttocksSize: 'Gemiddeld',
     buttocksShape: 'Rond',
+    lingerieMainType: 'Lingeriesetje',
+    lingerieTopType: 'Bralette (zonder beugel)',
+    lingerieBottomType: 'Hipster / Heupslip',
     lingerieStyle: 'Kant',
+    lingerieMaterial: 'Kant',
     lingerieColor: 'Zwart',
     personality: 'Creatief, extravert en altijd op zoek naar inspiratie. Ze heeft een open en warme persoonlijkheid en maakt gemakkelijk contact met anderen. Ze is een dromer met een praktische inslag.',
     backstory: 'Eva groeide op in een artistieke familie en wist al op jonge leeftijd dat ze iets creatiefs wilde doen. Na de kunstacademie begon ze voor zichzelf als freelance grafisch ontwerper. Ze haalt haar inspiratie uit reizen en de bruisende cultuur van Amsterdam.',
@@ -62,7 +66,7 @@ export const mockCharacters: Character[] = [
     imageHint: 'female portrait',
     iconBgClass: 'bg-pink-100 dark:bg-pink-900/50',
     iconTextClass: 'text-pink-700 dark:text-pink-300',
-    description: 'Eva de Wit is een 28-jarige, creatieve en energieke grafisch ontwerper uit Amsterdam. Ze is 1,70 m lang met een slanke bouw, lang blond haar en opvallende groene ogen. Haar vriendelijke en open persoonlijkheid wordt weerspiegeld in haar elegante kledingstijl, vaak een combinatie van een blouse, rok en laarzen. Ze heeft een discrete tatoeage op haar pols en een paar charmante sproeten. Eva is een extraverte dromer die gemakkelijk contact maakt. Haar passie voor kunst en design, gevoed door haar artistieke familie en reizen, is de kern van haar werk en leven.'
+    description: "Eva de Wit is een 28-jarige, sprankelende grafisch ontwerper die de creatieve energie van haar woonplaats Amsterdam belichaamt. Met haar 1.70 meter en slanke bouw heeft ze een gracieuze verschijning. Haar lange, blonde haar valt vaak los over haar schouders en haar groene ogen stralen een vriendelijke en open warmte uit. Een subtiele tatoeage op haar pols en een lichte sprenkeling van sproetjes over haar neus geven haar een unieke, artistieke charme. Eva's kledingstijl is elegant en vrouwelijk; ze draagt graag een stijlvolle blouse op een zwierige rok, gecombineerd met leren laarzen. Onder haar kleding geeft ze de voorkeur aan comfortabele maar mooie lingerie, zoals een zwart kanten bralette-setje. Als persoon is Eva extravert en maakt ze moeiteloos contact, altijd op zoek naar inspiratie in de wereld om haar heen. Haar achtergrond in een artistieke familie heeft haar gevormd tot een creatieve dromer met een praktische inslag, die haar passie heeft omgezet in een succesvolle carrière als freelance ontwerper."
   }
 ];
 
