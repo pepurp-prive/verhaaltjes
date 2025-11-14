@@ -163,9 +163,9 @@ export default function CharacterCreatePage() {
       });
 
       if (response.content) {
-        if (fieldId === 'features') {
-            const currentFeatures = getValues('features') || [];
-            setValue('features', [...currentFeatures, response.content]);
+        if (fieldId === 'features' || fieldId === 'bodyHair') {
+            const currentValues = getValues(fieldId) || [];
+            setValue(fieldId, [...currentValues, response.content]);
         } else {
              setValue(fieldId as any, response.content, { shouldValidate: true });
         }
@@ -253,7 +253,12 @@ export default function CharacterCreatePage() {
                 </FormItem>
               )} />
               <FormField control={form.control} name="age" render={({ field }) => (
-                <FormItem><FormLabel>Leeftijd / Range</FormLabel><FormControl><Input placeholder="Bijv: '28', 'Tussen 18-20'" {...field} /></FormControl></FormItem>
+                <FormItem><FormLabel>Leeftijd / Range</FormLabel>
+                    <div className="flex items-center gap-2">
+                        <FormControl><Input placeholder="Bijv: '28', 'Tussen 18-20'" {...field} /></FormControl>
+                        <AiButton tooltip="Genereer leeftijd" onClick={() => handleAiField('age')} />
+                    </div>
+                </FormItem>
               )} />
               <FormField control={form.control} name="gender" render={({ field }) => (
                 <FormItem>
@@ -281,10 +286,20 @@ export default function CharacterCreatePage() {
                 <FormItem><FormLabel>Specificeer rol</FormLabel><FormControl><Input placeholder="Specificeer rol" {...field} /></FormControl></FormItem>
               )} />}
               <FormField control={form.control} name="job" render={({ field }) => (
-                <FormItem><FormLabel>Beroep / Studie</FormLabel><FormControl><Input placeholder="Bijv: 'Student', 'Hacker'" {...field} /></FormControl></FormItem>
+                <FormItem><FormLabel>Beroep / Studie</FormLabel>
+                    <div className="flex items-center gap-2">
+                        <FormControl><Input placeholder="Bijv: 'Student', 'Hacker'" {...field} /></FormControl>
+                        <AiButton tooltip="Genereer beroep" onClick={() => handleAiField('job')} />
+                    </div>
+                </FormItem>
               )} />
               <FormField control={form.control} name="location" render={({ field }) => (
-                <FormItem><FormLabel>Woonplaats / Omgeving</FormLabel><FormControl><Input placeholder="Bijv: 'Grote stad', 'Rustig dorp'" {...field} /></FormControl></FormItem>
+                <FormItem><FormLabel>Woonplaats / Omgeving</FormLabel>
+                    <div className="flex items-center gap-2">
+                        <FormControl><Input placeholder="Bijv: 'Grote stad', 'Rustig dorp'" {...field} /></FormControl>
+                        <AiButton tooltip="Genereer locatie" onClick={() => handleAiField('location')} />
+                    </div>
+                </FormItem>
               )} />
             </FormSection>
 
@@ -377,7 +392,10 @@ export default function CharacterCreatePage() {
                     
                     <Controller control={form.control} name="bodyHair" render={({ field }) => (
                       <FormItem className="md:col-span-1"><FormLabel>Lichaamsbeharing</FormLabel>
-                          <TagInput {...field} placeholder="Plek, bv: Borst: Weinig (druk Enter)" />
+                          <div className="flex items-center gap-2">
+                             <TagInput {...field} placeholder="Plek, bv: Borst: Weinig (druk Enter)" />
+                             <AiButton tooltip="Genereer lichaamsbeharing" onClick={() => handleAiField('bodyHair')} />
+                          </div>
                           <FormDescription>Voeg plek en hoeveelheid toe.</FormDescription>
                       </FormItem>
                     )} />
@@ -385,7 +403,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="impression" render={({ field }) => (
                   <FormItem><FormLabel>Eerste Indruk</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                    <Select onValuechange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -394,7 +412,10 @@ export default function CharacterCreatePage() {
 
                 <Controller control={form.control} name="features" render={({ field }) => (
                   <FormItem className="md:col-span-1"><FormLabel>Opvallende Kenmerken</FormLabel>
-                      <TagInput {...field} placeholder="Typ kenmerk en druk op Enter..." />
+                      <div className="flex items-center gap-2">
+                        <TagInput {...field} placeholder="Typ kenmerk en druk op Enter..." />
+                        <AiButton tooltip="Genereer kenmerk" onClick={() => handleAiField('features')} />
+                      </div>
                   </FormItem>
                 )} />
             </FormSection>
@@ -505,10 +526,20 @@ export default function CharacterCreatePage() {
               <AiButton tooltip="Genereer hele categorie" onClick={() => handleAiCategory('details-section')} />
             }>
               <FormField control={form.control} name="personality" render={({ field }) => (
-                  <FormItem className="md:col-span-2"><FormLabel>Persoonlijkheid</FormLabel><FormControl><Textarea rows={3} placeholder="Beschrijf hun persoonlijkheid..." {...field} /></FormControl></FormItem>
+                  <FormItem className="md:col-span-2"><FormLabel>Persoonlijkheid</FormLabel>
+                    <div className="flex items-center gap-2">
+                        <FormControl><Textarea rows={3} placeholder="Beschrijf hun persoonlijkheid..." {...field} /></FormControl>
+                        <AiButton tooltip="Genereer persoonlijkheid" onClick={() => handleAiField('personality')} />
+                    </div>
+                  </FormItem>
               )} />
               <FormField control={form.control} name="backstory" render={({ field }) => (
-                  <FormItem className="md:col-span-2"><FormLabel>Achtergrond</FormLabel><FormControl><Textarea rows={3} placeholder="Beschrijf hun achtergrondverhaal..." {...field} /></FormControl></FormItem>
+                  <FormItem className="md:col-span-2"><FormLabel>Achtergrond</FormLabel>
+                    <div className="flex items-center gap-2">
+                        <FormControl><Textarea rows={3} placeholder="Beschrijf hun achtergrondverhaal..." {...field} /></FormControl>
+                        <AiButton tooltip="Genereer achtergrond" onClick={() => handleAiField('backstory')} />
+                    </div>
+                  </FormItem>
               )} />
             </FormSection>
 
