@@ -795,3 +795,5 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
 export default function CharacterEditPage({ params }: { params: { id: string } }) {
   return <CharacterEditForm characterId={params.id} />;
 }
+
+    
