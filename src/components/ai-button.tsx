@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Loader2 } from "lucide-react";
 import { AiSparklesIcon } from "@/components/icons";
+import { cn } from "@/lib/utils";
 
 type AiButtonProps = {
   onClick: () => Promise<void>;
@@ -32,9 +33,9 @@ export function AiButton({ onClick, tooltip, className, disabled }: AiButtonProp
             size="icon"
             onClick={handleClick}
             disabled={isLoading || disabled}
-            className={className}
+            className={cn("h-7 w-7 text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300", className)}
           >
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AiSparklesIcon className="h-5 w-5 text-blue-500" />}
+            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <AiSparklesIcon className="h-5 w-5" />}
             <span className="sr-only">{tooltip}</span>
           </Button>
         </TooltipTrigger>
@@ -45,3 +46,5 @@ export function AiButton({ onClick, tooltip, className, disabled }: AiButtonProp
     </TooltipProvider>
   );
 }
+
+    
