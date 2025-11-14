@@ -23,7 +23,7 @@ export const dropdownOptions = {
         buttocksSize: ["Klein", "Gemiddeld", "Vol", "Rond", "Anders"],
         buttocksShape: ["Rond", "Stevig", "Zacht", "Sportief", "Vlak", "Anders"],
         bodyType: ["Body", "Korset", "Teddy", "Babydoll", "Anders"],
-        sexyLingerieDetails: ["Hoge uitsnede", "Veel kant/mesh", "Strappy details", "Open cup / kruis", "Jarretels", "Anders"],
+        sexyLingerieDetails: ["Jarretels", "Veel kant/mesh", "Strappy details", "Doorschijnende stof", "Satijn en zijde", "Body-hugging fit", "Anders"],
     },
     shared: {
         hairColor: ["Blond", "Bruin", "Zwart", "Rood", "Grijs / Wit", "Anders"],

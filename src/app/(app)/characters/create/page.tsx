@@ -308,7 +308,7 @@ export default function CharacterCreatePage() {
                 </FormItem>
               )} />
               {role === 'Anders' && <FormField control={form.control} name="roleOther" render={({ field }) => (
-                <FormItem className="md:col-span-2"><FormLabel>Specificeer rol</FormLabel><FormControl><Input placeholder="Specificeer rol" {...field} /></FormControl></FormItem>
+                <FormItem><FormLabel>Specificeer rol</FormLabel><FormControl><Input placeholder="Specificeer rol" {...field} /></FormControl></FormItem>
               )} />}
               <FormField control={form.control} name="job" render={({ field }) => (
                 <FormItem>
@@ -352,8 +352,71 @@ export default function CharacterCreatePage() {
                   </FormItem>
                 )} />
                 {build === 'Anders' && <FormField control={form.control} name="buildOther" render={({ field }) => (
-                    <FormItem className="md:col-span-2"><FormLabel>Specificeer lichaamsbouw</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>
+                    <FormItem><FormLabel>Specificeer lichaamsbouw</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>
                 )} />}
+                
+                <FormField control={form.control} name="hairColor" render={({ field }) => (
+                  <FormItem><FormLabel>Haarkleur</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                      <SelectContent>{dropdownOptions.shared.hairColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </FormItem>
+                )} />
+                {hairColor === 'Anders' && <FormField control={form.control} name="hairColorOther" render={({ field }) => (<FormItem><FormLabel>Specificeer haarkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+
+                <FormField control={form.control} name="hairStyle" render={({ field }) => (
+                  <FormItem><FormLabel>Haarstijl</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                      <SelectContent>{(gender ? dropdownOptions[gender]?.hairStyle || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </FormItem>
+                )} />
+                {hairStyle === 'Anders' && <FormField control={form.control} name="hairStyleOther" render={({ field }) => (<FormItem><FormLabel>Specificeer haarstijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+
+                <FormField control={form.control} name="eyes" render={({ field }) => (
+                  <FormItem><FormLabel>Oogkleur</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                      <SelectContent>{dropdownOptions.shared.eyeColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </FormItem>
+                )} />
+                {eyes === 'Anders' && <FormField control={form.control} name="eyesOther" render={({ field }) => (<FormItem><FormLabel>Specificeer oogkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+
+                {gender === 'Man' && <>
+                    <FormField control={form.control} name="facialHair" render={({ field }) => (
+                        <FormItem><FormLabel>Gezichtsbeharing</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                            <SelectContent>{dropdownOptions.Man.facialHair.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                        </Select></FormItem>
+                    )} />
+                    {facialHair === 'Anders' && <FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem><FormLabel>Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                </>}
+                
+                {gender === 'Vrouw' && <>
+                    <FormField control={form.control} name="breastsCup" render={({ field }) => (
+                        <FormItem><FormLabel>Borsten - Cupmaat</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                            <SelectContent>{dropdownOptions.Vrouw.breastsCup.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                        </Select></FormItem>
+                    )} />
+                    {breastsCup === 'Anders' && <FormField control={form.control} name="breastsCupOther" render={({ field }) => (<FormItem><FormLabel>Specificeer cupmaat</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                    <FormField control={form.control} name="breastsShape" render={({ field }) => (
+                        <FormItem><FormLabel>Borsten - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                            <SelectContent>{dropdownOptions.Vrouw.breastsShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                        </Select></FormItem>
+                    )} />
+                    {breastsShape === 'Anders' && <FormField control={form.control} name="breastsShapeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                    <FormField control={form.control} name="buttocksSize" render={({ field }) => (
+                        <FormItem><FormLabel>Billen - Grootte</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                            <SelectContent>{dropdownOptions.Vrouw.buttocksSize.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                        </Select></FormItem>
+                    )} />
+                     {buttocksSize === 'Anders' && <FormField control={form.control} name="buttocksSizeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer grootte</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                    <FormField control={form.control} name="buttocksShape" render={({ field }) => (
+                        <FormItem><FormLabel>Billen - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                            <SelectContent>{dropdownOptions.Vrouw.buttocksShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                        </Select></FormItem>
+                    )} />
+                     {buttocksShape === 'Anders' && <FormField control={form.control} name="buttocksShapeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                </>}
 
                 <FormField control={form.control} name="impression" render={({ field }) => (
                   <FormItem><FormLabel>Eerste Indruk</FormLabel>
@@ -362,9 +425,19 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                
+                <Controller control={form.control} name="features" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Opvallende Kenmerken</FormLabel>
+                      <div className="relative flex items-center">
+                        <TagInput {...field} placeholder="Typ kenmerk en druk op Enter..." />
+                        <AiButton className="absolute right-2" tooltip="Genereer kenmerk" onClick={() => handleAiField('features')} />
+                      </div>
+                  </FormItem>
+                )} />
 
-                 {gender === 'Man' && (
+                {gender === 'Man' && (
                   <Controller control={form.control} name="bodyHair" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Lichaamsbeharing</FormLabel>
@@ -382,80 +455,6 @@ export default function CharacterCreatePage() {
                     </FormItem>
                   )} />
                 )}
-
-                {gender === 'Vrouw' && <>
-                    <FormField control={form.control} name="breastsCup" render={({ field }) => (
-                        <FormItem><FormLabel>Borsten - Cupmaat</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                            <SelectContent>{dropdownOptions.Vrouw.breastsCup.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                        </Select></FormItem>
-                    )} />
-                    {breastsCup === 'Anders' && <FormField control={form.control} name="breastsCupOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer cupmaat</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                    <FormField control={form.control} name="breastsShape" render={({ field }) => (
-                        <FormItem><FormLabel>Borsten - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                            <SelectContent>{dropdownOptions.Vrouw.breastsShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                        </Select></FormItem>
-                    )} />
-                    {breastsShape === 'Anders' && <FormField control={form.control} name="breastsShapeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                    <FormField control={form.control} name="buttocksSize" render={({ field }) => (
-                        <FormItem><FormLabel>Billen - Grootte</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                            <SelectContent>{dropdownOptions.Vrouw.buttocksSize.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                        </Select></FormItem>
-                    )} />
-                     {buttocksSize === 'Anders' && <FormField control={form.control} name="buttocksSizeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer grootte</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                    <FormField control={form.control} name="buttocksShape" render={({ field }) => (
-                        <FormItem><FormLabel>Billen - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                            <SelectContent>{dropdownOptions.Vrouw.buttocksShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                        </Select></FormItem>
-                    )} />
-                     {buttocksShape === 'Anders' && <FormField control={form.control} name="buttocksShapeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                </>}
-
-                
-                <FormField control={form.control} name="hairColor" render={({ field }) => (
-                  <FormItem><FormLabel>Haarkleur</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                      <SelectContent>{dropdownOptions.shared.hairColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                    </Select>
-                  </FormItem>
-                )} />
-                {hairColor === 'Anders' && <FormField control={form.control} name="hairColorOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer haarkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-
-                <FormField control={form.control} name="hairStyle" render={({ field }) => (
-                  <FormItem><FormLabel>Haarstijl</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
-                      <SelectContent>{(gender ? dropdownOptions[gender]?.hairStyle || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                    </Select>
-                  </FormItem>
-                )} />
-                {hairStyle === 'Anders' && <FormField control={form.control} name="hairStyleOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer haarstijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-
-                <FormField control={form.control} name="eyes" render={({ field }) => (
-                  <FormItem><FormLabel>Oogkleur</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                      <SelectContent>{dropdownOptions.shared.eyeColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                    </Select>
-                  </FormItem>
-                )} />
-                {eyes === 'Anders' && <FormField control={form.control} name="eyesOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer oogkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-
-                {gender === 'Man' && <>
-                    <FormField control={form.control} name="facialHair" render={({ field }) => (
-                        <FormItem><FormLabel>Gezichtsbeharing</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                            <SelectContent>{dropdownOptions.Man.facialHair.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                        </Select></FormItem>
-                    )} />
-                    {facialHair === 'Anders' && <FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                </>}
-                
-                <Controller control={form.control} name="features" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Opvallende Kenmerken</FormLabel>
-                      <div className="relative flex items-center">
-                        <TagInput {...field} placeholder="Typ kenmerk en druk op Enter..." />
-                        <AiButton className="absolute right-2" tooltip="Genereer kenmerk" onClick={() => handleAiField('features')} />
-                      </div>
-                  </FormItem>
-                )} />
             </FormSection>
 
             <Separator />
@@ -470,7 +469,7 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                {style === 'Anders' && <FormField control={form.control} name="styleOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {style === 'Anders' && <FormField control={form.control} name="styleOther" render={({ field }) => (<FormItem><FormLabel>Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
                 <FormField control={form.control} name="outfitTop" render={({ field }) => (
                   <FormItem><FormLabel>Bovenkleding</FormLabel>
@@ -479,7 +478,7 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                {outfitTop === 'Anders' && <FormField control={form.control} name="outfitTopOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer bovenkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {outfitTop === 'Anders' && <FormField control={form.control} name="outfitTopOther" render={({ field }) => (<FormItem><FormLabel>Specificeer bovenkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
                 <FormField control={form.control} name="outfitBottom" render={({ field }) => (
                   <FormItem><FormLabel>Onderkleding</FormLabel>
@@ -488,7 +487,7 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                {outfitBottom === 'Anders' && <FormField control={form.control} name="outfitBottomOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer onderkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {outfitBottom === 'Anders' && <FormField control={form.control} name="outfitBottomOther" render={({ field }) => (<FormItem><FormLabel>Specificeer onderkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
                 <FormField control={form.control} name="shoes" render={({ field }) => (
                   <FormItem><FormLabel>Schoeisel</FormLabel>
@@ -497,7 +496,7 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                {shoes === 'Anders' && <FormField control={form.control} name="shoesOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer schoeisel</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {shoes === 'Anders' && <FormField control={form.control} name="shoesOther" render={({ field }) => (<FormItem><FormLabel>Specificeer schoeisel</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
             </FormSection>
 
             {gender === 'Vrouw' && <>
@@ -514,7 +513,7 @@ export default function CharacterCreatePage() {
                           </SelectContent>
                       </Select></FormItem>
                   )} />
-                  {lingerieMainType === 'Anders' && <FormField control={form.control} name="lingerieMainTypeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer type</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                  {lingerieMainType === 'Anders' && <FormField control={form.control} name="lingerieMainTypeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer type</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
 
                   {(lingerieMainType === 'Lingeriesetje' || lingerieMainType === 'Alleen Bovenstuk') && <>
@@ -523,7 +522,7 @@ export default function CharacterCreatePage() {
                               <SelectContent>{dropdownOptions.Vrouw.lingerieTopType.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                           </Select></FormItem>
                       )} />
-                      {lingerieTopType === 'Anders' && <FormField control={form.control} name="lingerieTopTypeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer bovenstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                      {lingerieTopType === 'Anders' && <FormField control={form.control} name="lingerieTopTypeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer bovenstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                   </>}
                   {(lingerieMainType === 'Lingeriesetje' || lingerieMainType === 'Alleen Onderstuk') && <>
                       <FormField control={form.control} name="lingerieBottomType" render={({ field }) => (
@@ -531,7 +530,7 @@ export default function CharacterCreatePage() {
                               <SelectContent>{dropdownOptions.Vrouw.lingerieBottomType.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                           </Select></FormItem>
                       )} />
-                      {lingerieBottomType === 'Anders' && <FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                      {lingerieBottomType === 'Anders' && <FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                   </>}
                    {lingerieMainType === 'Body, korset, enzv.' && (
                     <>
@@ -563,7 +562,7 @@ export default function CharacterCreatePage() {
                           control={form.control}
                           name="lingerieBodyTypeOther"
                           render={({ field }) => (
-                            <FormItem className="md:col-span-2">
+                            <FormItem>
                               <FormLabel>Specificeer ander type</FormLabel>
                               <div className="relative flex items-center">
                                 <FormControl>
@@ -587,14 +586,14 @@ export default function CharacterCreatePage() {
                           <SelectContent>{dropdownOptions.Vrouw.lingerieStyle.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select></FormItem>
                   )} />
-                  {lingerieStyle === 'Anders' && <FormField control={form.control} name="lingerieStyleOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                  {lingerieStyle === 'Anders' && <FormField control={form.control} name="lingerieStyleOther" render={({ field }) => (<FormItem><FormLabel>Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                   
                   <FormField control={form.control} name="lingerieMaterial" render={({ field }) => (
                       <FormItem><FormLabel>Materiaal</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.Vrouw.lingerieMaterial.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select></FormItem>
                   )} />
-                  {lingerieMaterial === 'Anders' && <FormField control={form.control} name="lingerieMaterialOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer materiaal</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                  {lingerieMaterial === 'Anders' && <FormField control={form.control} name="lingerieMaterialOther" render={({ field }) => (<FormItem><FormLabel>Specificeer materiaal</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
                   <FormField control={form.control} name="lingerieColor" render={({ field }) => (<FormItem><FormLabel>Kleurenschema</FormLabel>
                     <div className="relative flex items-center">
@@ -662,7 +661,7 @@ export default function CharacterCreatePage() {
                           control={form.control}
                           name="sexyLingerieDetailsOther"
                           render={({ field }) => (
-                            <FormItem className="md:col-span-2">
+                            <FormItem>
                               <FormLabel>Specificeer sexy detail</FormLabel>
                               <div className="relative flex items-center">
                                 <FormControl>
@@ -687,7 +686,8 @@ export default function CharacterCreatePage() {
                           <SelectContent>{dropdownOptions.Vrouw.lingerieBrands.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select></FormItem>
                   )} />
-                  {lingerieBrands === 'Anders' && <FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer merk</FormLabel>
+                  {lingerieBrands === 'Anders' && <FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem>
+                    <FormLabel>Specificeer merk</FormLabel>
                     <div className="relative flex items-center">
                         <FormControl><Input {...field} /></FormControl>
                         <AiButton className="absolute right-2" tooltip="Genereer merk" onClick={() => handleAiField('lingerieBrandsDropdownOther')} />
