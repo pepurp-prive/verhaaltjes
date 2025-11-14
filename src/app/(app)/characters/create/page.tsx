@@ -33,7 +33,7 @@ import { generateAiFieldContent } from '@/ai/flows/generate-individual-character
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { TagInput } from '@/components/tag-input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Switch } from '@/components/ui/switch';
 
 const characterFormSchema = z.object({
   name: z.string().min(1, 'Naam is verplicht.'),
@@ -81,7 +81,8 @@ const characterFormSchema = z.object({
   lingerieTopTypeOther: z.string().optional(),
   lingerieBottomType: z.string().optional(),
   lingerieBottomTypeOther: z.string().optional(),
-  lingerieBodyOtherInput: z.string().optional(),
+  lingerieBodyType: z.string().optional(),
+  lingerieBodyTypeOther: z.string().optional(),
   lingerieBrandsDropdown: z.string().optional(),
   lingerieBrandsDropdownOther: z.string().optional(),
   lingerieStyle: z.string().optional(),
@@ -90,7 +91,9 @@ const characterFormSchema = z.object({
   lingerieMaterialOther: z.string().optional(),
   lingerieColor: z.string().optional(),
   lingerieDetails: z.string().optional(),
-  isSexyLingerie: z.string().optional(),
+  isSexyLingerie: z.boolean().default(false),
+  sexyLingerieDetails: z.string().optional(),
+  sexyLingerieDetailsOther: z.string().optional(),
   personality: z.string().optional(),
   backstory: z.string().optional(),
 });
@@ -118,6 +121,7 @@ export default function CharacterCreatePage() {
     defaultValues: {
       features: [],
       bodyHair: [],
+      isSexyLingerie: false,
     },
   });
 
@@ -141,19 +145,24 @@ export default function CharacterCreatePage() {
   const lingerieMainType = watch('lingerieMainType');
   const lingerieTopType = watch('lingerieTopType');
   const lingerieBottomType = watch('lingerieBottomType');
+  const lingerieBodyType = watch('lingerieBodyType');
   const lingerieBrands = watch('lingerieBrandsDropdown');
   const lingerieStyle = watch('lingerieStyle');
   const lingerieMaterial = watch('lingerieMaterial');
+  const isSexyLingerie = watch('isSexyLingerie');
+  const sexyLingerieDetails = watch('sexyLingerieDetails');
   
   useEffect(() => {
     // Reset gender-specific fields when gender changes
     const fieldsToReset: (keyof CharacterFormValues)[] = [
         'hairStyle', 'outfitTop', 'outfitBottom', 'shoes', 'facialHair',
         'bodyHair', 'breastsCup', 'breastsShape', 'buttocksSize', 'buttocksShape',
-        'lingerieMainType', 'lingerieTopType', 'lingerieBottomType', 'lingerieBodyOtherInput',
-        'lingerieBrandsDropdown', 'lingerieStyle', 'lingerieMaterial', 'lingerieColor', 'lingerieDetails'
+        'lingerieMainType', 'lingerieTopType', 'lingerieBottomType', 'lingerieBodyType',
+        'lingerieBrandsDropdown', 'lingerieStyle', 'lingerieMaterial', 'lingerieColor', 'lingerieDetails',
+        'isSexyLingerie', 'sexyLingerieDetails'
     ];
     fieldsToReset.forEach(field => setValue(field, undefined));
+    setValue('isSexyLingerie', false); // Ensure switch is reset
   }, [gender, setValue]);
 
   async function handleAiField(fieldId: keyof CharacterFormValues) {
@@ -524,12 +533,54 @@ export default function CharacterCreatePage() {
                       )} />
                       {lingerieBottomType === 'Anders' && <FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                   </>}
-                   {lingerieMainType === 'Body, korset, enzv.' && <FormField control={form.control} name="lingerieBodyOtherInput" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer Type</FormLabel>
-                    <div className="relative flex items-center">
-                        <FormControl><Input placeholder="Bijv: 'Zwarte kanten body'" {...field} /></FormControl>
-                        <AiButton className="absolute right-2" tooltip="Genereer type" onClick={() => handleAiField('lingerieBodyOtherInput')} />
-                    </div>
-                   </FormItem>)} />}
+                   {lingerieMainType === 'Body, korset, enzv.' && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="lingerieBodyType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Specificeer Type</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Kies..." />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {dropdownOptions.Vrouw.bodyType.map((o) => (
+                                  <SelectItem key={o} value={o}>
+                                    {o}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                        )}
+                      />
+                      {lingerieBodyType === 'Anders' && (
+                        <FormField
+                          control={form.control}
+                          name="lingerieBodyTypeOther"
+                          render={({ field }) => (
+                            <FormItem className="md:col-span-2">
+                              <FormLabel>Specificeer ander type</FormLabel>
+                              <div className="relative flex items-center">
+                                <FormControl>
+                                  <Input {...field} />
+                                </FormControl>
+                                <AiButton
+                                  className="absolute right-2"
+                                  tooltip="Genereer type"
+                                  onClick={() => handleAiField('lingerieBodyTypeOther')}
+                                />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                    </>
+                  )}
 
                   <FormField control={form.control} name="lingerieStyle" render={({ field }) => (
                       <FormItem><FormLabel>Stijl</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
@@ -562,38 +613,74 @@ export default function CharacterCreatePage() {
                     control={form.control}
                     name="isSexyLingerie"
                     render={({ field }) => (
-                      <FormItem className="md:col-span-2 space-y-3">
-                        <FormLabel>Sexy Lingerie?</FormLabel>
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm md:col-span-2">
+                        <div className="space-y-0.5">
+                          <FormLabel>Sexy Lingerie?</FormLabel>
+                          <FormDescription>
+                            Draagt dit personage vaak uitdagende lingerie?
+                          </FormDescription>
+                        </div>
                         <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex items-center space-x-4"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="Ja" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Ja</FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="Nee" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Nee</FormLabel>
-                            </FormItem>
-                             <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="Soms" />
-                              </FormControl>
-                              <FormLabel className="font-normal">Soms / Ligt eraan</FormLabel>
-                            </FormItem>
-                          </RadioGroup>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
                         </FormControl>
-                        <FormMessage />
                       </FormItem>
                     )}
                   />
+
+                  {isSexyLingerie && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="sexyLingerieDetails"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Wat maakt het sexy?</FormLabel>
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Kies een detail..." />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {dropdownOptions.Vrouw.sexyLingerieDetails.map(
+                                  (o) => (
+                                    <SelectItem key={o} value={o}>
+                                      {o}
+                                    </SelectItem>
+                                  )
+                                )}
+                              </SelectContent>
+                            </Select>
+                          </FormItem>
+                        )}
+                      />
+                      {sexyLingerieDetails === 'Anders' && (
+                        <FormField
+                          control={form.control}
+                          name="sexyLingerieDetailsOther"
+                          render={({ field }) => (
+                            <FormItem className="md:col-span-2">
+                              <FormLabel>Specificeer sexy detail</FormLabel>
+                              <div className="relative flex items-center">
+                                <FormControl>
+                                  <Input {...field} />
+                                </FormControl>
+                                <AiButton
+                                  className="absolute right-2"
+                                  tooltip="Genereer detail"
+                                  onClick={() => handleAiField('sexyLingerieDetailsOther')}
+                                />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      )}
+                    </>
+                  )}
+
 
                    <FormField control={form.control} name="lingerieBrandsDropdown" render={({ field }) => (
                       <FormItem><FormLabel>Favoriete Merken</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>

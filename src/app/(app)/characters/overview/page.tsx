@@ -8,12 +8,19 @@ import { ArrowLeft, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 function CharacterCard({ character }: { character: Character }) {
+  const iconBgClass = character.gender === 'Man' 
+    ? 'bg-blue-100 dark:bg-blue-900/50' 
+    : 'bg-pink-100 dark:bg-pink-900/50';
+  const iconTextClass = character.gender === 'Man' 
+    ? 'text-blue-700 dark:text-blue-300' 
+    : 'text-pink-700 dark:text-pink-300';
+
   return (
     <Card className="flex flex-col rounded-2xl shadow-lg border-gray-200/50 dark:border-gray-800/50 overflow-hidden h-full">
       <CardContent className="p-6 flex-grow">
         <div className="flex items-center space-x-4 mb-4">
-          <span className={cn('p-3 rounded-xl inline-block', character.iconBgClass)}>
-            <User className={cn('h-6 w-6', character.iconTextClass)} />
+          <span className={cn('p-3 rounded-xl inline-block', iconBgClass)}>
+            <User className={cn('h-6 w-6', iconTextClass)} />
           </span>
           <h3 className="text-xl font-semibold text-foreground font-headline">
             {character.name}
@@ -58,11 +65,20 @@ export default function CharacterOverviewPage() {
           <Link href="/characters/create">Nieuw Personage</Link>
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockCharacters.map((char) => (
-          <CharacterCard key={char.id} character={char} />
-        ))}
-      </div>
+       {mockCharacters.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {mockCharacters.map((char) => (
+            <CharacterCard key={char.id} character={char} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12 border-2 border-dashed rounded-xl">
+          <p className="text-muted-foreground">Je hebt nog geen personages gemaakt.</p>
+          <Button asChild variant="link">
+            <Link href="/characters/create">Begin met het maken van je eerste personage!</Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

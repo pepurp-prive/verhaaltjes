@@ -39,11 +39,20 @@ export default function StoryOverviewPage() {
             </Link>
         </nav>
         <h2 className="text-2xl font-bold font-headline mb-6">Mijn Verhalen</h2>
-        <div className="space-y-4">
-            {mockStories.map(story => (
-                <StoryCard key={story.id} story={story} />
-            ))}
-        </div>
+         {mockStories.length > 0 ? (
+            <div className="space-y-4">
+                {mockStories.map(story => (
+                    <StoryCard key={story.id} story={story} />
+                ))}
+            </div>
+         ) : (
+            <div className="text-center py-12 border-2 border-dashed rounded-xl">
+                <p className="text-muted-foreground">Je hebt nog geen verhalen gemaakt.</p>
+                 <Button asChild variant="link">
+                    <Link href="/story/create">Begin met het schrijven van je eerste verhaal!</Link>
+                </Button>
+            </div>
+         )}
     </Card>
     )
 }
