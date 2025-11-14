@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, use } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { mockCharacters } from '@/lib/mock-data';
@@ -118,5 +118,6 @@ function CharacterView({ characterId }: { characterId: string }) {
 }
 
 export default function CharacterViewPage({ params }: { params: { id: string } }) {
-  return <CharacterView characterId={params.id} />;
+  const resolvedParams = use(Promise.resolve(params));
+  return <CharacterView characterId={resolvedParams.id} />;
 }
