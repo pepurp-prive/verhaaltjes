@@ -247,7 +247,10 @@ export default function CharacterCreatePage() {
               <FormField control={form.control} name="name" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Naam *</FormLabel>
-                  <FormControl><Input placeholder="Bijv: 'Elara Vex'" {...field} /></FormControl>
+                   <div className="relative flex items-center">
+                    <FormControl><Input placeholder="Bijv: 'Elara Vex'" {...field} /></FormControl>
+                     <AiButton className="absolute right-2" tooltip="Genereer naam" onClick={() => handleAiField('name')} />
+                  </div>
                   <FormMessage />
                 </FormItem>
               )} />
@@ -357,6 +360,34 @@ export default function CharacterCreatePage() {
                      {buttocksShape === 'Anders' && <FormField control={form.control} name="buttocksShapeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                 </>}
 
+                <FormField control={form.control} name="impression" render={({ field }) => (
+                  <FormItem><FormLabel>Eerste Indruk</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                      <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </FormItem>
+                )} />
+                {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+
+                 {gender === 'Man' && <>
+                  <Controller control={form.control} name="bodyHair" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Lichaamsbeharing</FormLabel>
+                        <div className="relative flex items-center">
+                          <TagInput 
+                            {...field} 
+                            placeholder="Plek, bv: Borst (druk Enter)"
+                            mode="key-value"
+                            keyPlaceholder="Plek..."
+                            valuePlaceholder="Hoeveelheid..."
+                          />
+                           <AiButton className="absolute right-2" tooltip="Genereer lichaamsbeharing" onClick={() => handleAiField('bodyHair')} />
+                        </div>
+                        <FormDescription>Voeg plek en hoeveelheid toe.</FormDescription>
+                    </FormItem>
+                  )} />
+                </>}
+                
                 <FormField control={form.control} name="hairColor" render={({ field }) => (
                   <FormItem><FormLabel>Haarkleur</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
@@ -368,7 +399,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="hairStyle" render={({ field }) => (
                   <FormItem><FormLabel>Haarstijl</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].hairStyle : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -393,28 +424,6 @@ export default function CharacterCreatePage() {
                     {facialHair === 'Anders' && <FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem><FormLabel>Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                 </>}
                 
-                <FormField control={form.control} name="impression" render={({ field }) => (
-                  <FormItem><FormLabel>Eerste Indruk</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                      <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                    </Select>
-                  </FormItem>
-                )} />
-                {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-
-                {gender === 'Man' && <>
-                  <Controller control={form.control} name="bodyHair" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Lichaamsbeharing</FormLabel>
-                        <div className="relative flex items-center">
-                          <TagInput {...field} placeholder="Plek, bv: Borst: Weinig (druk Enter)" />
-                           <AiButton className="absolute right-2" tooltip="Genereer lichaamsbeharing" onClick={() => handleAiField('bodyHair')} />
-                        </div>
-                        <FormDescription>Voeg plek en hoeveelheid toe.</FormDescription>
-                    </FormItem>
-                  )} />
-                </>}
-
                 <Controller control={form.control} name="features" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Opvallende Kenmerken</FormLabel>
@@ -442,7 +451,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="outfitTop" render={({ field }) => (
                   <FormItem><FormLabel>Bovenkleding</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].outfitTop : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -451,7 +460,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="outfitBottom" render={({ field }) => (
                   <FormItem><FormLabel>Onderkleding</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].outfitBottom : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -460,7 +469,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="shoes" render={({ field }) => (
                   <FormItem><FormLabel>Schoeisel</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].shoes : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -477,7 +486,8 @@ export default function CharacterCreatePage() {
                             <SelectItem value="Lingeriesetje">Lingeriesetje</SelectItem>
                             <SelectItem value="Alleen Bovenstuk">Alleen Bovenstuk</SelectItem>
                             <SelectItem value="Alleen Onderstuk">Alleen Onderstuk</SelectItem>
-                            <SelectItem value="Body / Korset / Anders">Body / Korset / Anders</SelectItem>
+                            <SelectItem value="Body / Korset">Body / Korset</SelectItem>
+                            <SelectItem value="Anders">Anders</SelectItem>
                           </SelectContent>
                       </Select></FormItem>
                   )} />
@@ -498,7 +508,12 @@ export default function CharacterCreatePage() {
                       )} />
                       {lingerieBottomType === 'Anders' && <FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem><FormLabel>Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
                   </>}
-                   {lingerieMainType === 'Body / Korset / Anders' && <FormField control={form.control} name="lingerieBodyOtherInput" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer Type</FormLabel><FormControl><Input placeholder="Bijv: 'Zwarte kanten body'" {...field} /></FormControl></FormItem>)} />}
+                   {lingerieMainType === 'Body / Korset' && <FormField control={form.control} name="lingerieBodyOtherInput" render={({ field }) => (<FormItem className="md:col-span-2"><FormLabel>Specificeer Type</FormLabel>
+                    <div className="relative flex items-center">
+                        <FormControl><Input placeholder="Bijv: 'Zwarte kanten body'" {...field} /></FormControl>
+                        <AiButton className="absolute right-2" tooltip="Genereer type" onClick={() => handleAiField('lingerieBodyOtherInput')} />
+                    </div>
+                   </FormItem>)} />}
 
                   <FormField control={form.control} name="lingerieStyle" render={({ field }) => (
                       <FormItem><FormLabel>Stijl</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
@@ -514,15 +529,30 @@ export default function CharacterCreatePage() {
                   )} />
                   {lingerieMaterial === 'Anders' && <FormField control={form.control} name="lingerieMaterialOther" render={({ field }) => (<FormItem><FormLabel>Specificeer materiaal</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
 
-                  <FormField control={form.control} name="lingerieColor" render={({ field }) => (<FormItem><FormLabel>Kleurenschema</FormLabel><FormControl><Input placeholder="Zwart, wit, pasteltinten" {...field} /></FormControl></FormItem>)} />
-                  <FormField control={form.control} name="lingerieDetails" render={({ field }) => (<FormItem><FormLabel>Patronen / Details</FormLabel><FormControl><Input placeholder="Kant, strikjes, mesh" {...field} /></FormControl></FormItem>)} />
+                  <FormField control={form.control} name="lingerieColor" render={({ field }) => (<FormItem><FormLabel>Kleurenschema</FormLabel>
+                    <div className="relative flex items-center">
+                        <FormControl><Input placeholder="Zwart, wit, pasteltinten" {...field} /></FormControl>
+                        <AiButton className="absolute right-2" tooltip="Genereer kleurenschema" onClick={() => handleAiField('lingerieColor')} />
+                    </div>
+                  </FormItem>)} />
+                  <FormField control={form.control} name="lingerieDetails" render={({ field }) => (<FormItem><FormLabel>Patronen / Details</FormLabel>
+                     <div className="relative flex items-center">
+                        <FormControl><Input placeholder="Kant, strikjes, mesh" {...field} /></FormControl>
+                        <AiButton className="absolute right-2" tooltip="Genereer details" onClick={() => handleAiField('lingerieDetails')} />
+                    </div>
+                  </FormItem>)} />
 
                    <FormField control={form.control} name="lingerieBrandsDropdown" render={({ field }) => (
                       <FormItem><FormLabel>Favoriete Merken</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.Vrouw.lingerieBrands.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select></FormItem>
                   )} />
-                  {lingerieBrands === 'Anders' && <FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem><FormLabel>Specificeer merk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                  {lingerieBrands === 'Anders' && <FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem><FormLabel>Specificeer merk</FormLabel>
+                    <div className="relative flex items-center">
+                        <FormControl><Input {...field} /></FormControl>
+                        <AiButton className="absolute right-2" tooltip="Genereer merk" onClick={() => handleAiField('lingerieBrandsDropdownOther')} />
+                    </div>
+                  </FormItem>)} />}
               </FormSection>
             </>}
             

@@ -13,7 +13,7 @@ export const dropdownOptions = {
         shoes: ["Sneakers", "Laarzen", "Hakken", "Sandalen/Slippers", "Sportschoenen", "Ballerina's", "Anders"],
         
         lingerieTopType: ["T-shirt BH (zonder opvulling)", "Push-up", "Balconette", "Plunge (diepe V-hals)", "Strapless", "Bralette (zonder beugel)", "Full-cup (volledig bedekkend)", "Beugelloos (algemeen)", "Anders"],
-        lingerieBottomType: ["Klassieke Slip", "Hipster / Heupslip", "Brazilian", "String / Thong", "Tanga", "Boyshort / Shorty", "Tailleslip (High-waist)", "Anders"],
+        lingerieBottomType: ["Hipster / Heupslip", "Brazilian", "String / Thong", "Tanga", "Boxershort", "Tailleslip (High-waist)", "Anders"],
         lingerieBrands: ["Victoria's Secret", "Calvin Klein", "Lounge", "Hunkemoller", "Geen specifiek merk", "Anders"],
         lingerieStyle: ["Basic", "Sportief", "Kant", "Glad", "Satijn/Zijde", "Speels", "Luxe", "Doorschijnend", "Anders"],
         lingerieMaterial: ["Katoen", "Kant", "Satijn", "Microvezel", "Mesh", "Mix", "Anders"],

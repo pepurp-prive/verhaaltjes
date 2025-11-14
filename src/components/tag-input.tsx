@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
@@ -10,15 +10,41 @@ interface TagInputProps {
   value: string[];
   onChange: (value: string[]) => void;
   placeholder?: string;
+  mode?: 'simple' | 'key-value';
+  keyPlaceholder?: string;
+  valuePlaceholder?: string;
 }
 
-export function TagInput({ value = [], onChange, placeholder }: TagInputProps) {
+export function TagInput({ 
+  value = [], 
+  onChange, 
+  placeholder,
+  mode = 'simple',
+  keyPlaceholder = 'Key',
+  valuePlaceholder = 'Value'
+}: TagInputProps) {
   const [inputValue, setInputValue] = useState("");
+  const [key, setKey] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && inputValue.trim()) {
       e.preventDefault();
-      addTag(inputValue.trim());
+      if (mode === 'key-value') {
+        if (!key) {
+          setKey(inputValue.trim());
+          setInputValue("");
+        } else {
+          addTag(`${key}: ${inputValue.trim()}`);
+          setKey(null);
+        }
+      } else {
+        addTag(inputValue.trim());
+      }
+    } else if (e.key === 'Backspace' && inputValue === '') {
+       if (key) {
+         setKey(null);
+       }
     }
   };
 
@@ -32,16 +58,29 @@ export function TagInput({ value = [], onChange, placeholder }: TagInputProps) {
   const removeTag = (tagToRemove: string) => {
     onChange(value.filter(tag => tag !== tagToRemove));
   };
+  
+  const currentPlaceholder = mode === 'key-value' 
+    ? (key ? valuePlaceholder : keyPlaceholder)
+    : placeholder;
 
   return (
     <div className="w-full">
-      <Input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-        className="pr-10"
-      />
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+            {key && (
+                 <Badge variant="outline" className="flex items-center gap-1.5">
+                    {key}:
+                 </Badge>
+            )}
+            <Input
+                ref={inputRef}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={currentPlaceholder}
+                className="pr-10 flex-1"
+            />
+        </div>
+
       <div className="flex flex-wrap gap-2 mt-2">
         {value.map((tag, index) => (
           <Badge key={index} variant="secondary" className="flex items-center gap-1.5">
