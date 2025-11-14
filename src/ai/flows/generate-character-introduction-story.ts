@@ -43,7 +43,7 @@ Based on the following character data, write a short, engaging introductory stor
 Character Data:
 {{{JSON.stringify character}}}
 
-Write a compelling, short story.
+Write a compelling, short story. Ensure the story is unique.
 `,
 });
 

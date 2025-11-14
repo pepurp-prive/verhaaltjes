@@ -10,7 +10,8 @@ export const mockCharacters: Character[] = [
     imageUrl: '', // You can add a placeholder image URL if you want
     imageHint: 'male portrait',
     iconBgClass: 'bg-blue-100 dark:bg-blue-900/50',
-    iconTextClass: 'text-blue-700 dark:text-blue-300'
+    iconTextClass: 'text-blue-700 dark:text-blue-300',
+    description: 'Jan is een 32-jarige softwareontwikkelaar met een passie voor code en koffie. Hij heeft een rustige persoonlijkheid maar een scherpe geest.'
   },
   {
     id: '2',
@@ -21,7 +22,8 @@ export const mockCharacters: Character[] = [
     imageUrl: '', // You can add a placeholder image URL if you want
     imageHint: 'female portrait',
     iconBgClass: 'bg-pink-100 dark:bg-pink-900/50',
-    iconTextClass: 'text-pink-700 dark:text-pink-300'
+    iconTextClass: 'text-pink-700 dark:text-pink-300',
+    description: 'Eva is een creatieve en energieke grafisch ontwerper van 28. Ze houdt van felle kleuren en brengt haar weekenden door met het verkennen van de stad.'
   }
 ];
 

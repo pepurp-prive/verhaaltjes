@@ -7,13 +7,11 @@ import { mockCharacters } from '@/lib/mock-data';
 import type { Character } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { generateCharacterIntroductionStory } from '@/ai/flows/generate-character-introduction-story';
-import { useToast } from '@/hooks/use-toast';
 
 function CharacterDataView({ character }: { character: Character }) {
   const displayData = useMemo(() => {
     // Exclude some internal or less relevant fields from the display
-    const { id, imageUrl, imageHint, iconBgClass, iconTextClass, ...rest } = character;
+    const { id, imageUrl, imageHint, iconBgClass, iconTextClass, description, ...rest } = character;
     return rest;
   }, [character]);
 
@@ -37,42 +35,19 @@ function CharacterDataView({ character }: { character: Character }) {
 }
 
 function CharacterView({ characterId }: { characterId: string }) {
-  const { toast } = useToast();
   const [character, setCharacter] = useState<Character | null>(null);
-  const [story, setStory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const foundCharacter = mockCharacters.find((c) => c.id === characterId);
     if (foundCharacter) {
       setCharacter(foundCharacter);
-    } else {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   }, [characterId]);
 
-  useEffect(() => {
-    if (character) {
-      const generateStory = async () => {
-        try {
-          const result = await generateCharacterIntroductionStory({ character });
-          setStory(result.story);
-        } catch (error: any) {
-          toast({
-            variant: 'destructive',
-            title: 'Fout bij verhaal genereren',
-            description: error.message || 'Er is iets misgegaan.',
-          });
-          setStory('Kon geen verhaal genereren voor dit personage.');
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      generateStory();
-    }
-  }, [character, toast]);
 
-  if (isLoading && !character) {
+  if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full p-8">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -110,27 +85,20 @@ function CharacterView({ characterId }: { characterId: string }) {
         <p className="text-muted-foreground">{character.job}</p>
       </header>
       
-      <Tabs defaultValue="story">
+      <Tabs defaultValue="description">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="story">Verhaal</TabsTrigger>
+          <TabsTrigger value="description">Beschrijving</TabsTrigger>
           <TabsTrigger value="data">Details</TabsTrigger>
         </TabsList>
-        <TabsContent value="story" className="mt-4">
+        <TabsContent value="description" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle className="font-headline">Introductie</CardTitle>
+              <CardTitle className="font-headline">Beschrijving</CardTitle>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
-                <div className="flex items-center space-x-2">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span>Verhaal wordt gegenereerd...</span>
-                </div>
-              ) : (
-                <p className="whitespace-pre-wrap leading-relaxed text-foreground/90">
-                  {story}
+               <p className="whitespace-pre-wrap leading-relaxed text-foreground/90">
+                  {character.description}
                 </p>
-              )}
             </CardContent>
           </Card>
         </TabsContent>

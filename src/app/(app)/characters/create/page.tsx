@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -34,6 +35,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { TagInput } from '@/components/tag-input';
 import { Switch } from '@/components/ui/switch';
+import { mockCharacters } from '@/lib/mock-data';
 
 const characterFormSchema = z.object({
   name: z.string().min(1, 'Naam is verplicht.'),
@@ -113,8 +115,8 @@ const getDropdownValue = (
 };
 
 export default function CharacterCreatePage() {
+  const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [result, setResult] = useState<string | null>(null);
   const { toast } = useToast();
   const form = useForm<CharacterFormValues>({
     resolver: zodResolver(characterFormSchema),
@@ -152,19 +154,6 @@ export default function CharacterCreatePage() {
   const isSexyLingerie = watch('isSexyLingerie');
   const sexyLingerieDetails = watch('sexyLingerieDetails');
   
-  useEffect(() => {
-    // Reset gender-specific fields when gender changes
-    const fieldsToReset: (keyof CharacterFormValues)[] = [
-        'hairStyle', 'outfitTop', 'outfitBottom', 'shoes', 'facialHair',
-        'bodyHair', 'breastsCup', 'breastsShape', 'buttocksSize', 'buttocksShape',
-        'lingerieMainType', 'lingerieTopType', 'lingerieBottomType', 'lingerieBodyType',
-        'lingerieBrandsDropdown', 'lingerieStyle', 'lingerieMaterial', 'lingerieColor', 'lingerieDetails',
-        'isSexyLingerie', 'sexyLingerieDetails'
-    ];
-    fieldsToReset.forEach(field => setValue(field, undefined));
-    setValue('isSexyLingerie', false); // Ensure switch is reset
-  }, [gender, setValue]);
-
   async function handleAiField(fieldId: keyof CharacterFormValues) {
     try {
       const response = await generateAiFieldContent({
@@ -212,7 +201,6 @@ export default function CharacterCreatePage() {
 
   async function onSubmit(data: CharacterFormValues) {
     setIsGenerating(true);
-    setResult(null);
 
     const descriptionParts = [
       `Naam: ${data.name}`,
@@ -232,7 +220,22 @@ export default function CharacterCreatePage() {
         ...data,
         description: fullDescription
       });
-      setResult(response.characterDetails);
+
+      const newCharacter = {
+          ...data,
+          id: Date.now().toString(),
+          description: response.characterDetails,
+          imageUrl: '', 
+          imageHint: data.gender === 'Man' ? 'male portrait' : 'female portrait',
+          iconBgClass: data.gender === 'Man' ? 'bg-blue-100 dark:bg-blue-900/50' : 'bg-pink-100 dark:bg-pink-900/50',
+          iconTextClass: data.gender === 'Man' ? 'text-blue-700 dark:text-blue-300' : 'text-pink-700 dark:text-pink-300',
+      };
+      
+      mockCharacters.push(newCharacter);
+      
+      toast({ title: 'Personage gecreëerd!', description: `${data.name} is toegevoegd aan je personages.` });
+      router.push('/characters/overview');
+
     } catch (e: any) {
       toast({ variant: 'destructive', title: 'Fout bij genereren', description: e.message });
     } finally {
@@ -288,7 +291,7 @@ export default function CharacterCreatePage() {
               <FormField control={form.control} name="gender" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Geslacht/Gender *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue placeholder="Kies een optie..." /></SelectTrigger></FormControl>
                     <SelectContent>
                       <SelectItem value="Man">Man</SelectItem>
@@ -301,7 +304,7 @@ export default function CharacterCreatePage() {
               <FormField control={form.control} name="role" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Rol in verhaal</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl><SelectTrigger><SelectValue placeholder="Kies een rol (optioneel)" /></SelectTrigger></FormControl>
                     <SelectContent>{dropdownOptions.shared.roles.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                   </Select>
@@ -351,7 +354,7 @@ export default function CharacterCreatePage() {
                 </div>
                 <FormField control={form.control} name="build" render={({ field }) => (
                   <FormItem><FormLabel>Lichaamsbouw</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.bodyBuild.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                      {build === 'Anders' && 
@@ -397,7 +400,7 @@ export default function CharacterCreatePage() {
                 
                 <FormField control={form.control} name="hairColor" render={({ field }) => (
                   <FormItem><FormLabel>Haarkleur</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.hairColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                     {hairColor === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="hairColorOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer haarkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
@@ -415,22 +418,22 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="eyes" render={({ field }) => (
                   <FormItem><FormLabel>Oogkleur</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.eyeColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                      {eyes === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="eyesOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer oogkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
-
+                
                 {gender === 'Vrouw' && (
                   <FormField control={form.control} name="impression" render={({ field }) => (
-                  <FormItem><FormLabel>Eerste Indruk</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
-                      <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
-                    </Select>
-                    {impression === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
-                  </FormItem>
-                )} />
+                    <FormItem><FormLabel>Eerste Indruk</FormLabel>
+                      <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                        <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
+                      </Select>
+                      {impression === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    </FormItem>
+                  )} />
                 )}
 
                 <Controller control={form.control} name="features" render={({ field }) => (
@@ -453,13 +456,13 @@ export default function CharacterCreatePage() {
                     )} />
                     <FormField control={form.control} name="impression" render={({ field }) => (
                       <FormItem><FormLabel>Eerste Indruk</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                        <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
                         {impression === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                       </FormItem>
                     )} />
-                    <Controller control={form.control} name="bodyHair" render={({ field }) => (
+                     <Controller control={form.control} name="bodyHair" render={({ field }) => (
                       <FormItem>
                         <FormLabel>Lichaamsbeharing</FormLabel>
                           <div className="relative flex items-center">
@@ -485,7 +488,7 @@ export default function CharacterCreatePage() {
             }>
                <FormField control={form.control} name="style" render={({ field }) => (
                   <FormItem><FormLabel>Algemene Kledingstijl</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.clothingStyle.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                     {style === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="styleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
@@ -763,13 +766,6 @@ export default function CharacterCreatePage() {
             </div>
           </form>
         </Form>
-        
-        {result && (
-          <div className="mt-6 bg-muted/50 p-4 rounded-lg">
-            <h3 className="font-headline text-xl mb-2">Gegenereerd Personage:</h3>
-            <p className="whitespace-pre-wrap text-foreground/90">{result}</p>
-          </div>
-        )}
       </div>
     </div>
   );

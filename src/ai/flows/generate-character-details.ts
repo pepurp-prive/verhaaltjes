@@ -27,7 +27,7 @@ const GenerateCharacterDetailsInputSchema = z.object({
 export type GenerateCharacterDetailsInput = z.infer<typeof GenerateCharacterDetailsInputSchema>;
 
 const GenerateCharacterDetailsOutputSchema = z.object({
-  characterDetails: z.string().describe('A detailed description of the character.'),
+  characterDetails: z.string().describe('A detailed and unique description of the character.'),
 });
 
 export type GenerateCharacterDetailsOutput = z.infer<typeof GenerateCharacterDetailsOutputSchema>;
@@ -44,7 +44,7 @@ const generateCharacterDetailsPrompt = ai.definePrompt({
   output: {
     schema: GenerateCharacterDetailsOutputSchema,
   },
-  prompt: `You are a creative writing assistant. Use the provided details to create a character description.
+  prompt: `You are a creative writing assistant. Use the provided details to create a unique and compelling character description. Ensure that each description is distinct and never identical to another, even with similar inputs.
 
   Gender: {{{gender}}}
   Age: {{{age}}}
@@ -53,6 +53,8 @@ const generateCharacterDetailsPrompt = ai.definePrompt({
   Personality: {{{personality}}}
   Backstory: {{{backstory}}}
   Description: {{{description}}}
+
+  Generate a new, unique description.
   `,
 });
 

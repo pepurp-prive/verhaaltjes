@@ -8,6 +8,7 @@ export type Character = {
   imageHint: string;
   iconBgClass: string;
   iconTextClass: string;
+  description?: string; // Add this line
   [key: string]: any; // Allow other properties
 };
 

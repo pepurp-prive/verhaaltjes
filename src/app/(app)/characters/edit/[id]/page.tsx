@@ -4,6 +4,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -29,6 +30,7 @@ import { AiButton } from '@/components/ai-button';
 import { dropdownOptions } from '@/lib/character-options';
 import { aiFillCharacterCategories } from '@/ai/flows/ai-fill-character-categories';
 import { generateAiFieldContent } from '@/ai/flows/generate-individual-character-fields';
+import { generateCharacterDetails } from '@/ai/flows/generate-character-details';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { TagInput } from '@/components/tag-input';
@@ -102,7 +104,20 @@ const characterFormSchema = z.object({
 
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
+const getDropdownValue = (
+  allValues: Partial<CharacterFormValues>,
+  fieldName: keyof CharacterFormValues,
+  otherFieldName: keyof CharacterFormValues
+) => {
+  const value = allValues[fieldName];
+  if (value === 'Anders') {
+    return allValues[otherFieldName] || '';
+  }
+  return value || '';
+};
+
 function CharacterEditForm({ characterId }: { characterId: string }) {
+  const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [character, setCharacter] = useState<Character | null>(null);
   const { toast } = useToast();
@@ -120,7 +135,6 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
     const foundCharacter = mockCharacters.find(c => c.id === characterId);
     if (foundCharacter) {
       setCharacter(foundCharacter);
-      // Set form values from the found character data
       form.reset(foundCharacter);
     }
   }, [characterId, form]);
@@ -199,24 +213,40 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
 
   async function onSubmit(data: CharacterFormValues) {
     setIsSaving(true);
+    
+    const descriptionParts = [
+      `Naam: ${data.name}`,
+      `Leeftijd: ${data.age || 'onbekend'}`,
+      `Geslacht: ${data.gender}`,
+      `Rol: ${getDropdownValue(data, 'role', 'roleOther')}`,
+      `Beroep: ${data.job || 'onbekend'}`,
+      `Locatie: ${data.location || 'onbekend'}`,
+      `Persoonlijkheid: ${data.personality || 'onbekend'}`,
+      `Achtergrond: ${data.backstory || 'onbekend'}`,
+    ];
+
+    const fullDescription = descriptionParts.filter(p => !p.endsWith(': ')).join('\n');
 
     try {
-      // Here you would typically save the data to your backend
-      // For now, we'll just simulate a save and show a toast
-      console.log('Updated character data:', data);
-      
-      // Find the character in the mock data and update it
+      const response = await generateCharacterDetails({
+        ...data,
+        description: fullDescription
+      });
+
       const charIndex = mockCharacters.findIndex(c => c.id === characterId);
       if (charIndex !== -1) {
-        mockCharacters[charIndex] = { ...mockCharacters[charIndex], ...data };
+        mockCharacters[charIndex] = { 
+            ...mockCharacters[charIndex], 
+            ...data,
+            description: response.characterDetails
+        };
       }
-
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate async save
       
       toast({
         title: 'Opgeslagen!',
         description: `De gegevens voor ${data.name} zijn bijgewerkt.`,
       });
+      router.push('/characters/overview');
 
     } catch (e: any) {
       toast({ variant: 'destructive', title: 'Fout bij opslaan', description: e.message });
