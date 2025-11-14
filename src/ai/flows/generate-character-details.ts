@@ -74,7 +74,7 @@ const GenerateCharacterDetailsInputSchema = z.object({
   sexyLingerieDetails: z.string().optional(),
   sexyLingerieDetailsOther: z.string().optional(),
   personality: z.string().optional(),
-  backstory: z_string().optional(),
+  backstory: z.string().optional(),
 });
 
 export type GenerateCharacterDetailsInput = z.infer<typeof GenerateCharacterDetailsInputSchema>;
