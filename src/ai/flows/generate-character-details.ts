@@ -74,7 +74,7 @@ const GenerateCharacterDetailsInputSchema = z.object({
   sexyLingerieDetails: z.string().optional(),
   sexyLingerieDetailsOther: z.string().optional(),
   personality: z.string().optional(),
-  backstory: z.string().optional(),
+  backstory: z_string().optional(),
 });
 
 export type GenerateCharacterDetailsInput = z.infer<typeof GenerateCharacterDetailsInputSchema>;
@@ -97,14 +97,14 @@ const generateCharacterDetailsPrompt = ai.definePrompt({
   output: {
     schema: GenerateCharacterDetailsOutputSchema,
   },
-  prompt: `You are a creative writing assistant. Your task is to write a long, detailed, and engaging character description in Dutch.
+  prompt: `You are a creative writing assistant. Your task is to write a very long, highly detailed, and engaging character description in Dutch. The description must be at least 500 words.
   Use all the information provided below to create a vivid and cohesive portrait of the character. Weave the details together into a narrative description, rather than just listing them.
   Make the character feel real and unique. Ensure that each description is distinct and never identical to another, even with similar inputs.
 
   Character Data:
   {{{JSON.stringify .}}}
 
-  Generate a new, unique, and detailed description.
+  Generate a new, unique, and very detailed description of at least 500 words.
   `,
 });
 
