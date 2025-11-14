@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import {
@@ -16,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { generateStoryFromPrompt } from '@/ai/flows/generate-story-from-prompt';
 
 const storySchema = z.object({
@@ -52,6 +53,15 @@ export default function StoryCreatePage() {
   return (
     <Card className="rounded-2xl shadow-lg">
       <CardHeader>
+        <nav className="mb-4">
+            <Link
+              href="/story/overview"
+              className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 font-semibold"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Terug naar Verhalen
+            </Link>
+          </nav>
         <CardTitle className="font-headline text-2xl">
           Nieuw Verhaal Maken
         </CardTitle>

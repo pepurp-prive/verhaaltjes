@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -30,7 +31,7 @@ import { generateCharacterDetails } from '@/ai/flows/generate-character-details'
 import { aiFillCharacterCategories } from '@/ai/flows/ai-fill-character-categories';
 import { generateAiFieldContent } from '@/ai/flows/generate-individual-character-fields';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { TagInput } from '@/components/tag-input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
@@ -232,6 +233,15 @@ export default function CharacterCreatePage() {
 
   return (
     <div className="p-6 md:p-8">
+      <nav className="mb-6">
+        <Link
+          href="/characters/overview"
+          className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 font-semibold"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Terug naar Personages
+        </Link>
+      </nav>
       <header className="mb-6">
         <h1 className="text-2xl font-bold font-headline">
           Nieuw Personage Creëren

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { mockStories } from '@/lib/mock-data';
 import type { Story } from '@/lib/types';
+import { ArrowLeft } from 'lucide-react';
 
 function StoryCard({ story }: { story: Story }) {
   return (
@@ -28,6 +29,15 @@ function StoryCard({ story }: { story: Story }) {
 export default function StoryOverviewPage() {
     return (
     <Card className="rounded-2xl shadow-lg p-6 md:p-8">
+        <nav className="mb-6">
+            <Link
+              href="/"
+              className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 font-semibold"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Terug naar Home
+            </Link>
+        </nav>
         <h2 className="text-2xl font-bold font-headline mb-6">Mijn Verhalen</h2>
         <div className="space-y-4">
             {mockStories.map(story => (

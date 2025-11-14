@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { mockCharacters } from '@/lib/mock-data';
 import type { Character } from '@/lib/types';
-import { User } from 'lucide-react';
+import { ArrowLeft, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 function CharacterCard({ character }: { character: Character }) {
@@ -42,7 +42,16 @@ function CharacterCard({ character }: { character: Character }) {
 
 export default function CharacterOverviewPage() {
   return (
-    <div className="p-0">
+    <div className="p-6 md:p-8">
+      <nav className="mb-6">
+        <Link
+          href="/"
+          className="text-primary hover:text-primary/80 transition-colors flex items-center gap-2 font-semibold"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Terug naar Home
+        </Link>
+      </nav>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold font-headline">Mijn Personages</h2>
         <Button asChild>
