@@ -34,8 +34,7 @@ function CharacterDataView({ character }: { character: Character }) {
   );
 }
 
-function CharacterView({ params }: { params: { id: string } }) {
-  const { id: characterId } = use(params);
+function CharacterView({ characterId }: { characterId: string }) {
   const [character, setCharacter] = useState<Character | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -120,5 +119,6 @@ function CharacterView({ params }: { params: { id: string } }) {
 
 
 export default function CharacterViewPage({ params }: { params: { id: string } }) {
-  return <CharacterView params={params} />;
+  const resolvedParams = use(params);
+  return <CharacterView characterId={resolvedParams.id} />;
 }
