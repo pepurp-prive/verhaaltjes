@@ -36,20 +36,20 @@ function CharacterDataView({ character }: { character: Character }) {
   );
 }
 
-export default function CharacterViewPage({ params }: { params: { id: string } }) {
+function CharacterView({ characterId }: { characterId: string }) {
   const { toast } = useToast();
   const [character, setCharacter] = useState<Character | null>(null);
   const [story, setStory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const foundCharacter = mockCharacters.find((c) => c.id === params.id);
+    const foundCharacter = mockCharacters.find((c) => c.id === characterId);
     if (foundCharacter) {
       setCharacter(foundCharacter);
     } else {
       setIsLoading(false);
     }
-  }, [params.id]);
+  }, [characterId]);
 
   useEffect(() => {
     if (character) {
@@ -147,4 +147,8 @@ export default function CharacterViewPage({ params }: { params: { id: string } }
       </Tabs>
     </div>
   );
+}
+
+export default function CharacterViewPage({ params }: { params: { id: string } }) {
+  return <CharacterView characterId={params.id} />;
 }

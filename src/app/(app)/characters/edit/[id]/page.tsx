@@ -27,7 +27,6 @@ import { Separator } from '@/components/ui/separator';
 import { FormSection } from '@/components/form-section';
 import { AiButton } from '@/components/ai-button';
 import { dropdownOptions } from '@/lib/character-options';
-import { generateCharacterDetails } from '@/ai/flows/generate-character-details';
 import { aiFillCharacterCategories } from '@/ai/flows/ai-fill-character-categories';
 import { generateAiFieldContent } from '@/ai/flows/generate-individual-character-fields';
 import { useToast } from '@/hooks/use-toast';
@@ -103,7 +102,7 @@ const characterFormSchema = z.object({
 
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
-export default function CharacterEditPage({ params }: { params: { id: string } }) {
+function CharacterEditForm({ characterId }: { characterId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   const [character, setCharacter] = useState<Character | null>(null);
   const { toast } = useToast();
@@ -118,13 +117,13 @@ export default function CharacterEditPage({ params }: { params: { id: string } }
   });
 
   useEffect(() => {
-    const foundCharacter = mockCharacters.find(c => c.id === params.id);
+    const foundCharacter = mockCharacters.find(c => c.id === characterId);
     if (foundCharacter) {
       setCharacter(foundCharacter);
       // Set form values from the found character data
       form.reset(foundCharacter);
     }
-  }, [params.id, form]);
+  }, [characterId, form]);
 
   const { watch, setValue, getValues } = form;
   const gender = watch('gender');
@@ -207,7 +206,7 @@ export default function CharacterEditPage({ params }: { params: { id: string } }
       console.log('Updated character data:', data);
       
       // Find the character in the mock data and update it
-      const charIndex = mockCharacters.findIndex(c => c.id === params.id);
+      const charIndex = mockCharacters.findIndex(c => c.id === characterId);
       if (charIndex !== -1) {
         mockCharacters[charIndex] = { ...mockCharacters[charIndex], ...data };
       }
@@ -761,4 +760,8 @@ export default function CharacterEditPage({ params }: { params: { id: string } }
       </div>
     </div>
   );
+}
+
+export default function CharacterEditPage({ params }: { params: { id: string } }) {
+  return <CharacterEditForm characterId={params.id} />;
 }
