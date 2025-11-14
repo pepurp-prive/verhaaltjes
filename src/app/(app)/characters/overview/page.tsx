@@ -61,7 +61,7 @@ export default function CharacterOverviewPage() {
       </nav>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold font-headline">Mijn Personages</h2>
-        <Button asChild>
+        <Button asChild className="bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90">
           <Link href="/characters/create">Nieuw Personage</Link>
         </Button>
       </div>
