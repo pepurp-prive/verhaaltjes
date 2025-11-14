@@ -104,18 +104,6 @@ const characterFormSchema = z.object({
 
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
-const getDropdownValue = (
-  allValues: Partial<CharacterFormValues>,
-  fieldName: keyof CharacterFormValues,
-  otherFieldName: keyof CharacterFormValues
-) => {
-  const value = allValues[fieldName];
-  if (value === 'Anders') {
-    return allValues[otherFieldName] || '';
-  }
-  return value || '';
-};
-
 function CharacterEditForm({ characterId }: { characterId: string }) {
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
@@ -214,24 +202,8 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
   async function onSubmit(data: CharacterFormValues) {
     setIsSaving(true);
     
-    const descriptionParts = [
-      `Naam: ${data.name}`,
-      `Leeftijd: ${data.age || 'onbekend'}`,
-      `Geslacht: ${data.gender}`,
-      `Rol: ${getDropdownValue(data, 'role', 'roleOther')}`,
-      `Beroep: ${data.job || 'onbekend'}`,
-      `Locatie: ${data.location || 'onbekend'}`,
-      `Persoonlijkheid: ${data.personality || 'onbekend'}`,
-      `Achtergrond: ${data.backstory || 'onbekend'}`,
-    ];
-
-    const fullDescription = descriptionParts.filter(p => !p.endsWith(': ')).join('\n');
-
     try {
-      const response = await generateCharacterDetails({
-        ...data,
-        description: fullDescription
-      });
+      const response = await generateCharacterDetails(data);
 
       const charIndex = mockCharacters.findIndex(c => c.id === characterId);
       if (charIndex !== -1) {
@@ -381,7 +353,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                      {build === 'Anders' && 
                         <div className="w-full pt-2">
                             <FormField control={form.control} name="buildOther" render={({ field }) => (
-                                <FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer lichaamsbouw</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>
+                                <FormItem className="w-full"><FormLabel className="text-xs text-muted-foreground">Specificeer lichaamsbouw</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>
                             )} />
                         </div>
                     }
@@ -393,28 +365,28 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                         <FormItem><FormLabel>Borsten - Cupmaat</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                             <SelectContent>{dropdownOptions.Vrouw.breastsCup.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {breastsCup === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="breastsCupOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer cupmaat</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {breastsCup === 'Anders' && <div className="pt-2"><FormField control={form.control} name="breastsCupOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer cupmaat</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                         </FormItem>
                     )} />
                     <FormField control={form.control} name="breastsShape" render={({ field }) => (
                         <FormItem><FormLabel>Borsten - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                             <SelectContent>{dropdownOptions.Vrouw.breastsShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {breastsShape === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="breastsShapeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {breastsShape === 'Anders' && <div className="pt-2"><FormField control={form.control} name="breastsShapeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                         </FormItem>
                     )} />
                     <FormField control={form.control} name="buttocksSize" render={({ field }) => (
                         <FormItem><FormLabel>Billen - Grootte</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                             <SelectContent>{dropdownOptions.Vrouw.buttocksSize.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {buttocksSize === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="buttocksSizeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer grootte</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {buttocksSize === 'Anders' && <div className="pt-2"><FormField control={form.control} name="buttocksSizeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer grootte</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                         </FormItem>
                     )} />
                     <FormField control={form.control} name="buttocksShape" render={({ field }) => (
                         <FormItem><FormLabel>Billen - Vorm</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                             <SelectContent>{dropdownOptions.Vrouw.buttocksShape.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {buttocksShape === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="buttocksShapeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {buttocksShape === 'Anders' && <div className="pt-2"><FormField control={form.control} name="buttocksShapeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer vorm</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                         </FormItem>
                     )} />
                 </>}
@@ -424,7 +396,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.hairColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {hairColor === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="hairColorOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer haarkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {hairColor === 'Anders' && <div className="pt-2"><FormField control={form.control} name="hairColorOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer haarkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
                 
@@ -433,7 +405,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender]?.hairStyle || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {hairStyle === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="hairStyleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer haarstijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {hairStyle === 'Anders' && <div className="pt-2"><FormField control={form.control} name="hairStyleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer haarstijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
 
@@ -442,7 +414,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.eyeColor.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                     {eyes === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="eyesOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer oogkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                     {eyes === 'Anders' && <div className="pt-2"><FormField control={form.control} name="eyesOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer oogkleur</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
                 
@@ -452,7 +424,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {impression === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {impression === 'Anders' && <div className="pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
                 )}
@@ -472,7 +444,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                         <FormItem><FormLabel>Gezichtsbeharing</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                             <SelectContent>{dropdownOptions.Man.facialHair.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {facialHair === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {facialHair === 'Anders' && <div className="pt-2"><FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                         </FormItem>
                     )} />
                     <FormField control={form.control} name="impression" render={({ field }) => (
@@ -480,7 +452,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                         <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.shared.impression.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                         </Select>
-                        {impression === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                        {impression === 'Anders' && <div className="pt-2"><FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                       </FormItem>
                     )} />
                      <Controller control={form.control} name="bodyHair" render={({ field }) => (
@@ -512,7 +484,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                       <SelectContent>{dropdownOptions.shared.clothingStyle.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {style === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="styleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {style === 'Anders' && <div className="pt-2"><FormField control={form.control} name="styleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
 
@@ -521,7 +493,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender]?.outfitTop || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {outfitTop === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="outfitTopOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer bovenkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {outfitTop === 'Anders' && <div className="pt-2"><FormField control={form.control} name="outfitTopOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer bovenkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
 
@@ -530,7 +502,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender]?.outfitBottom || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {outfitBottom === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="outfitBottomOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer onderkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {outfitBottom === 'Anders' && <div className="pt-2"><FormField control={form.control} name="outfitBottomOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer onderkleding</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
 
@@ -539,7 +511,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                     <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender]?.shoes || [] : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
-                    {shoes === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="shoesOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer schoeisel</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                    {shoes === 'Anders' && <div className="pt-2"><FormField control={form.control} name="shoesOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer schoeisel</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                   </FormItem>
                 )} />
             </FormSection>
@@ -557,7 +529,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                             <SelectItem value="Anders">Anders</SelectItem>
                           </SelectContent>
                       </Select>
-                      {lingerieMainType === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieMainTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer type</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                      {lingerieMainType === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieMainTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer type</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                       </FormItem>
                   )} />
 
@@ -567,7 +539,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                           <FormItem><FormLabel>Type Bovenstuk (BH)</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                               <SelectContent>{dropdownOptions.Vrouw.lingerieTopType.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                           </Select>
-                          {lingerieTopType === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieTopTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer bovenstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                          {lingerieTopType === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieTopTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer bovenstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                           </FormItem>
                       )} />
                       
@@ -577,7 +549,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                           <FormItem><FormLabel>Type Onderstuk</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                               <SelectContent>{dropdownOptions.Vrouw.lingerieBottomType.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                           </Select>
-                           {lingerieBottomType === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                           {lingerieBottomType === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieBottomTypeOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer onderstuk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                           </FormItem>
                       )} />
                   </>}
@@ -604,7 +576,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                               </SelectContent>
                             </Select>
                              {lingerieBodyType === 'Anders' && (
-                                <div className="w-full pt-2">
+                                <div className="pt-2">
                                 <FormField
                                   control={form.control}
                                   name="lingerieBodyTypeOther"
@@ -636,7 +608,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                       <FormItem><FormLabel>Stijl</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.Vrouw.lingerieStyle.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select>
-                      {lingerieStyle === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieStyleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                      {lingerieStyle === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieStyleOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer stijl</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                       </FormItem>
                   )} />
                   
@@ -644,7 +616,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                       <FormItem><FormLabel>Materiaal</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.Vrouw.lingerieMaterial.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select>
-                      {lingerieMaterial === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieMaterialOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer materiaal</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
+                      {lingerieMaterial === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieMaterialOther" render={({ field }) => (<FormItem><FormLabel className="text-xs text-muted-foreground">Specificeer materiaal</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} /></div>}
                       </FormItem>
                   )} />
 
@@ -707,7 +679,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                               </SelectContent>
                             </Select>
                             {sexyLingerieDetails === 'Anders' && (
-                                <div className="w-full pt-2">
+                                <div className="pt-2">
                                 <FormField
                                 control={form.control}
                                 name="sexyLingerieDetailsOther"
@@ -740,7 +712,7 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
                       <FormItem><FormLabel>Favoriete Merken</FormLabel><Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
                           <SelectContent>{dropdownOptions.Vrouw.lingerieBrands.map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                       </Select>
-                      {lingerieBrands === 'Anders' && <div className="w-full pt-2"><FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem>
+                      {lingerieBrands === 'Anders' && <div className="pt-2"><FormField control={form.control} name="lingerieBrandsDropdownOther" render={({ field }) => (<FormItem>
                         <FormLabel className="text-xs text-muted-foreground">Specificeer merk</FormLabel>
                         <div className="relative flex items-center">
                             <FormControl><Input {...field} /></FormControl>
@@ -795,5 +767,3 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
 export default function CharacterEditPage({ params }: { params: { id: string } }) {
   return <CharacterEditForm characterId={params.id} />;
 }
-
-    

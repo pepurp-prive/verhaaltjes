@@ -15,13 +15,66 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const GenerateCharacterDetailsInputSchema = z.object({
-  gender: z.string().describe('The gender of the character.'),
-  age: z.string().describe('The age of the character.'),
-  job: z.string().optional().describe('The job of the character.'),
-  location: z.string().optional().describe('The location of the character.'),
-  personality: z.string().optional().describe('The personality of the character.'),
-  backstory: z.string().optional().describe('The backstory of the character.'),
-  description: z.string().describe('A detailed description of the character based on the provided attributes.'),
+  name: z.string().min(1, 'Naam is verplicht.'),
+  age: z.string().optional(),
+  gender: z.enum(['Man', 'Vrouw']),
+  role: z.string().optional(),
+  roleOther: z.string().optional(),
+  job: z.string().optional(),
+  location: z.string().optional(),
+  lengthM: z.string().optional(),
+  lengthCm: z.string().optional(),
+  build: z.string().optional(),
+  buildOther: z.string().optional(),
+  hairColor: z.string().optional(),
+  hairColorOther: z.string().optional(),
+  hairStyle: z.string().optional(),
+  hairStyleOther: z.string().optional(),
+  eyes: z.string().optional(),
+  eyesOther: z.string().optional(),
+  facialHair: z.string().optional(),
+  facialHairOther: z.string().optional(),
+  bodyHair: z.array(z.string()).optional(),
+  breastsCup: z.string().optional(),
+  breastsCupOther: z.string().optional(),
+  breastsShape: z.string().optional(),
+  breastsShapeOther: z.string().optional(),
+  buttocksSize: z.string().optional(),
+  buttocksSizeOther: z.string().optional(),
+  buttocksShape: z.string().optional(),
+  buttocksShapeOther: z.string().optional(),
+  features: z.array(z.string()).optional(),
+  impression: z.string().optional(),
+  impressionOther: z.string().optional(),
+  style: z.string().optional(),
+  styleOther: z.string().optional(),
+  outfitTop: z.string().optional(),
+  outfitTopOther: z.string().optional(),
+  outfitBottom: z.string().optional(),
+  outfitBottomOther: z.string().optional(),
+  shoes: z.string().optional(),
+  shoesOther: z.string().optional(),
+  lingerieMainType: z.string().optional(),
+  lingerieMainTypeOther: z.string().optional(),
+  lingerieTopType: z.string().optional(),
+  lingerieTopTypeOther: z.string().optional(),
+  lingerieBottomType: z.string().optional(),
+  lingerieBottomTypeOther: z.string().optional(),
+  lingerieBodyType: z.string().optional(),
+  lingerieBodyTypeOther: z.string().optional(),
+  lingerieBrandsDropdown: z.string().optional(),
+  lingerieBrandsDropdownOther: z.string().optional(),
+  lingerieStyle: z.string().optional(),
+  lingerieStyleOther: z.string().optional(),
+  lingerieMaterial: z.string().optional(),
+  lingerieMaterialOther: z.string().optional(),
+  lingerieColor: z.string().optional(),
+  lingerieDetails: z.string().optional(),
+  isSexyLingerie: z.boolean().optional(),
+  sexyLingerieDetails: z.string().optional(),
+  sexyLingerieDetailsOther: z.string().optional(),
+  personality: z.string().optional(),
+  backstory: z.string().optional(),
 });
 
 export type GenerateCharacterDetailsInput = z.infer<typeof GenerateCharacterDetailsInputSchema>;
@@ -44,17 +97,14 @@ const generateCharacterDetailsPrompt = ai.definePrompt({
   output: {
     schema: GenerateCharacterDetailsOutputSchema,
   },
-  prompt: `You are a creative writing assistant. Use the provided details to create a unique and compelling character description. Ensure that each description is distinct and never identical to another, even with similar inputs.
+  prompt: `You are a creative writing assistant. Your task is to write a long, detailed, and engaging character description in Dutch.
+  Use all the information provided below to create a vivid and cohesive portrait of the character. Weave the details together into a narrative description, rather than just listing them.
+  Make the character feel real and unique. Ensure that each description is distinct and never identical to another, even with similar inputs.
 
-  Gender: {{{gender}}}
-  Age: {{{age}}}
-  Job: {{{job}}}
-  Location: {{{location}}}
-  Personality: {{{personality}}}
-  Backstory: {{{backstory}}}
-  Description: {{{description}}}
+  Character Data:
+  {{{JSON.stringify .}}}
 
-  Generate a new, unique description.
+  Generate a new, unique, and detailed description.
   `,
 });
 
