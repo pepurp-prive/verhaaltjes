@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, use } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -104,7 +104,8 @@ const characterFormSchema = z.object({
 
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
-function CharacterEditForm({ characterId }: { characterId: string }) {
+function CharacterEditForm({ params }: { params: { id: string } }) {
+  const { id: characterId } = use(params);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [character, setCharacter] = useState<Character | null>(null);
@@ -765,5 +766,5 @@ function CharacterEditForm({ characterId }: { characterId: string }) {
 }
 
 export default function CharacterEditPage({ params }: { params: { id: string } }) {
-  return <CharacterEditForm characterId={params.id} />;
+  return <CharacterEditForm params={params} />;
 }
