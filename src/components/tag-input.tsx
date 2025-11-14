@@ -34,8 +34,15 @@ export function TagInput({ value = [], onChange, placeholder }: TagInputProps) {
   };
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-2 mb-2">
+    <div className="w-full">
+      <Input
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder={placeholder}
+        className="pr-10"
+      />
+      <div className="flex flex-wrap gap-2 mt-2">
         {value.map((tag, index) => (
           <Badge key={index} variant="secondary" className="flex items-center gap-1.5">
             {tag}
@@ -50,12 +57,6 @@ export function TagInput({ value = [], onChange, placeholder }: TagInputProps) {
           </Badge>
         ))}
       </div>
-      <Input
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-      />
     </div>
   );
 }

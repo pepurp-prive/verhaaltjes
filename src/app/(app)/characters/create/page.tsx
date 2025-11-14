@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { FormSection } from '@/components/form-section';
 import { AiButton } from '@/components/ai-button';
@@ -229,13 +228,13 @@ export default function CharacterCreatePage() {
   }
 
   return (
-    <Card className="rounded-2xl shadow-lg p-6 md:p-8">
-      <CardHeader className="p-0 mb-6">
-        <CardTitle className="text-2xl font-bold font-headline">
+    <div className="p-6 md:p-8">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold font-headline">
           Nieuw Personage Creëren
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
+        </h1>
+      </header>
+      <div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             
@@ -369,7 +368,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="hairStyle" render={({ field }) => (
                   <FormItem><FormLabel>Haarstijl</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].hairStyle : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -392,18 +391,8 @@ export default function CharacterCreatePage() {
                         </Select></FormItem>
                     )} />
                     {facialHair === 'Anders' && <FormField control={form.control} name="facialHairOther" render={({ field }) => (<FormItem><FormLabel>Specificeer gezichtsbeharing</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
-                    
-                    <Controller control={form.control} name="bodyHair" render={({ field }) => (
-                      <FormItem className="md:col-span-1"><FormLabel>Lichaamsbeharing</FormLabel>
-                          <div className="flex items-center gap-2">
-                             <TagInput {...field} placeholder="Plek, bv: Borst: Weinig (druk Enter)" />
-                             <AiButton tooltip="Genereer lichaamsbeharing" onClick={() => handleAiField('bodyHair')} />
-                          </div>
-                          <FormDescription>Voeg plek en hoeveelheid toe.</FormDescription>
-                      </FormItem>
-                    )} />
                 </>}
-
+                
                 <FormField control={form.control} name="impression" render={({ field }) => (
                   <FormItem><FormLabel>Eerste Indruk</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}><FormControl><SelectTrigger><SelectValue placeholder="Kies..." /></SelectTrigger></FormControl>
@@ -411,13 +400,27 @@ export default function CharacterCreatePage() {
                     </Select>
                   </FormItem>
                 )} />
-                 {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+                {impression === 'Anders' && <FormField control={form.control} name="impressionOther" render={({ field }) => (<FormItem><FormLabel>Specificeer eerste indruk</FormLabel><FormControl><Input {...field} /></FormControl></FormItem>)} />}
+
+                {gender === 'Man' && <>
+                  <Controller control={form.control} name="bodyHair" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Lichaamsbeharing</FormLabel>
+                        <div className="relative flex items-center">
+                          <TagInput {...field} placeholder="Plek, bv: Borst: Weinig (druk Enter)" />
+                           <AiButton className="absolute right-2" tooltip="Genereer lichaamsbeharing" onClick={() => handleAiField('bodyHair')} />
+                        </div>
+                        <FormDescription>Voeg plek en hoeveelheid toe.</FormDescription>
+                    </FormItem>
+                  )} />
+                </>}
 
                 <Controller control={form.control} name="features" render={({ field }) => (
-                  <FormItem className="md:col-span-1"><FormLabel>Opvallende Kenmerken</FormLabel>
-                      <div className="flex items-center gap-2">
+                  <FormItem>
+                    <FormLabel>Opvallende Kenmerken</FormLabel>
+                      <div className="relative flex items-center">
                         <TagInput {...field} placeholder="Typ kenmerk en druk op Enter..." />
-                        <AiButton tooltip="Genereer kenmerk" onClick={() => handleAiField('features')} />
+                        <AiButton className="absolute right-2" tooltip="Genereer kenmerk" onClick={() => handleAiField('features')} />
                       </div>
                   </FormItem>
                 )} />
@@ -439,7 +442,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="outfitTop" render={({ field }) => (
                   <FormItem><FormLabel>Bovenkleding</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].outfitTop : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -448,7 +451,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="outfitBottom" render={({ field }) => (
                   <FormItem><FormLabel>Onderkleding</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].outfitBottom : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -457,7 +460,7 @@ export default function CharacterCreatePage() {
 
                 <FormField control={form.control} name="shoes" render={({ field }) => (
                   <FormItem><FormLabel>Schoeisel</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={!gender}><FormControl><SelectTrigger><SelectValue placeholder={gender ? "Kies..." : "Kies eerst geslacht"} /></SelectTrigger></FormControl>
                       <SelectContent>{(gender ? dropdownOptions[gender].shoes : []).map(o => <SelectItem key={o} value={o}>{o}</SelectItem>)}</SelectContent>
                     </Select>
                   </FormItem>
@@ -560,18 +563,12 @@ export default function CharacterCreatePage() {
         </Form>
         
         {result && (
-          <Card className="mt-6 bg-secondary/50">
-            <CardHeader>
-              <CardTitle className="font-headline text-xl">Gegenereerd Personage:</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="whitespace-pre-wrap text-foreground/90">{result}</p>
-            </CardContent>
-          </Card>
+          <div className="mt-6 bg-muted/50 p-4 rounded-lg">
+            <h3 className="font-headline text-xl mb-2">Gegenereerd Personage:</h3>
+            <p className="whitespace-pre-wrap text-foreground/90">{result}</p>
+          </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
-
-    
