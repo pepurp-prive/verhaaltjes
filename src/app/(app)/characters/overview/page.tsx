@@ -39,7 +39,7 @@ function CharacterCard({ character }: { character: Character }) {
           <Button variant="outline" size="sm" asChild className="flex-1">
             <Link href={`/characters/view/${character.id}`}>Bekijk</Link>
           </Button>
-          <Button variant="default" size="sm" asChild className="flex-1">
+          <Button variant="secondary" size="sm" asChild className="flex-1">
             <Link href={`/characters/edit/${character.id}`}>Bewerk</Link>
           </Button>
       </CardFooter>
