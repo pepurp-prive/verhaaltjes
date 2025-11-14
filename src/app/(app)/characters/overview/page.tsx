@@ -12,8 +12,8 @@ function CharacterCard({ character }: { character: Character }) {
     ? 'bg-blue-100 dark:bg-blue-900/50' 
     : 'bg-pink-100 dark:bg-pink-900/50';
   const iconTextClass = character.gender === 'Man' 
-    ? 'text-blue-700 dark:text-blue-300' 
-    : 'text-pink-700 dark:text-pink-300';
+    ? 'text-blue-500' 
+    : 'text-pink-500';
 
   return (
     <Card className="flex flex-col rounded-2xl shadow-lg border-gray-200/50 dark:border-gray-800/50 overflow-hidden h-full">
