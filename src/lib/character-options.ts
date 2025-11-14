@@ -32,5 +32,3 @@ export const dropdownOptions = {
         roles: ["Protagonist", "Antagonist", "Ondersteunend personage", "Figurant", "Anders"]
     }
 };
-
-    
