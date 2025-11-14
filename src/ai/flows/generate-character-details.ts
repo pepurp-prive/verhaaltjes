@@ -62,7 +62,8 @@ const generateCharacterDetailsFlow = ai.defineFlow(
     inputSchema: GenerateCharacterDetailsInputSchema,
     outputSchema: GenerateCharacterDetailsOutputSchema,
   },
-  async input => {\n    const {output} = await generateCharacterDetailsPrompt(input);
+  async (input) => {
+    const {output} = await generateCharacterDetailsPrompt(input);
     return output!;
   }
 );
