@@ -3,13 +3,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users } from 'lucide-react';
+import { Menu, Pen, Users, Settings, LogOut } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { UserActions } from '@/components/user-actions';
+
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
