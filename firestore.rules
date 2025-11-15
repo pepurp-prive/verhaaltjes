@@ -1,0 +1,107 @@
+/**
+ * @fileoverview Firestore Security Rules for the creative writing application.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model. Each user has full control over their account data, settings, and associated story texts.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores user account information.
+ * - /users/{userId}/settings/{settingsId}: Stores user-specific settings.
+ * - /users/{userId}/story_texts/{storyTextId}: Stores additional story text content.
+ *
+ * Key Security Decisions:
+ * - Users can only access their own data. There is no concept of shared or public access in this initial prototype.
+ * - Listing of user documents is disabled to prevent unauthorized enumeration.
+ *
+ * Denormalization for Authorization:
+ * - The 'id' field within each document under /users/{userId} must match the 'userId' path segment. This is enforced on creation and update to maintain the ownership link.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Secures the user account document.
+     * @path /users/{userId}
+     * @allow (create) User with UID 'user_abc' can create their account if the document ID matches their UID and sets the id field to their uid.
+     * @deny (create) User with UID 'user_abc' cannot create an account with a mismatched document ID.
+     * @allow (get) User with UID 'user_abc' can read their own account.
+     * @deny (get) User with UID 'user_xyz' cannot read another user's account.
+     * @allow (update) User with UID 'user_abc' can update their own account.
+     * @deny (update) User with UID 'user_xyz' cannot update another user's account.
+     * @allow (delete) User with UID 'user_abc' can delete their own account.
+     * @deny (delete) User with UID 'user_xyz' cannot delete another user's account.
+     * @principle Enforces document ownership for all operations, and prevents unauthorized listing of user accounts.
+     */
+    match /users/{userId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Secures the user settings document.
+     * @path /users/{userId}/settings/{settingsId}
+     * @allow (create) User with UID 'user_abc' can create settings if the parent document ID matches their UID.
+     * @deny (create) User with UID 'user_abc' cannot create settings under another user's account.
+     * @allow (get) User with UID 'user_abc' can read their own settings.
+     * @deny (get) User with UID 'user_xyz' cannot read another user's settings.
+     * @allow (update) User with UID 'user_abc' can update their own settings.
+     * @deny (update) User with UID 'user_xyz' cannot update another user's settings.
+     * @allow (delete) User with UID 'user_abc' can delete their own settings.
+     * @deny (delete) User with UID 'user_xyz' cannot delete another user's settings.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/settings/{settingsId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Secures the user story texts.
+     * @path /users/{userId}/story_texts/{storyTextId}
+     * @allow (create) User with UID 'user_abc' can create a story text if the parent document ID matches their UID.
+     * @deny (create) User with UID 'user_abc' cannot create a story text under another user's account.
+     * @allow (get) User with UID 'user_abc' can read their own story texts.
+     * @deny (get) User with UID 'user_xyz' cannot read another user's story texts.
+     * @allow (update) User with UID 'user_abc' can update their own story texts.
+     * @deny (update) User with UID 'user_xyz' cannot update another user's story texts.
+     * @allow (delete) User with UID 'user_abc' can delete their own story texts.
+     * @deny (delete) User with UID 'user_xyz' cannot delete another user's story texts.
+     * @principle Enforces document ownership for all operations.
+     */
+    match /users/{userId}/story_texts/{storyTextId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}

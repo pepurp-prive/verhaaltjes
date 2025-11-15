@@ -1,0 +1,169 @@
+{
+  "entities": {
+    "UserAccount": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserAccount",
+      "type": "object",
+      "description": "Represents a user account within the application.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user account."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "settingsId": {
+          "type": "string",
+          "description": "Reference to UserSettings. (Relationship: UserAccount 1:1 UserSettings)"
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "settingsId"
+      ]
+    },
+    "UserSettings": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserSettings",
+      "type": "object",
+      "description": "Stores user-specific settings and preferences.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user settings."
+        },
+        "theme": {
+          "type": "string",
+          "description": "Preferred theme of the application (e.g., light, dark)."
+        },
+        "notificationsEnabled": {
+          "type": "boolean",
+          "description": "Indicates whether notifications are enabled for the user."
+        },
+        "defaultStoryPrivacy": {
+          "type": "string",
+          "description": "Default privacy setting for newly created stories (e.g., public, private)."
+        },
+        "fontSize": {
+          "type": "number",
+          "description": "Preferred font size for the application."
+        },
+        "defaultCharacterArchetype": {
+          "type": "string",
+          "description": "The user's preferred character archetype to use as a starting point."
+        }
+      },
+      "required": [
+        "id",
+        "theme",
+        "notificationsEnabled",
+        "defaultStoryPrivacy",
+        "fontSize"
+      ]
+    },
+    "StoryText": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StoryText",
+      "type": "object",
+      "description": "Stores additional text content associated with a user story.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the story text."
+        },
+        "storyId": {
+          "type": "string",
+          "description": "Reference to Story. (Relationship: StoryText 1:1 Story)"
+        },
+        "additionalNotes": {
+          "type": "string",
+          "description": "Free-form text field for the user to add additional notes or content related to the story."
+        },
+        "inspiration": {
+          "type": "string",
+          "description": "A place to keep inspiring quotes, links, or images"
+        },
+        "worldbuildingDetails": {
+          "type": "string",
+          "description": "Notes on locations, lore, and key events"
+        }
+      },
+      "required": [
+        "id",
+        "storyId",
+        "additionalNotes"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserAccount",
+          "schema": {
+            "$ref": "#/backend/entities/UserAccount"
+          },
+          "description": "Stores user account information. The 'userId' parameter corresponds to the Firebase Auth UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/settings/{settingsId}",
+        "definition": {
+          "entityName": "UserSettings",
+          "schema": {
+            "$ref": "#/backend/entities/UserSettings"
+          },
+          "description": "Stores user settings and preferences. The 'userId' parameter corresponds to the Firebase Auth UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            },
+            {
+              "name": "settingsId",
+              "description": "The unique identifier for the user settings document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/story_texts/{storyTextId}",
+        "definition": {
+          "entityName": "StoryText",
+          "schema": {
+            "$ref": "#/backend/entities/StoryText"
+          },
+          "description": "Stores story text content. The 'userId' parameter corresponds to the Firebase Auth UID.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The Firebase Auth UID of the user."
+            },
+            {
+              "name": "storyTextId",
+              "description": "The unique identifier for the story text document."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore data structure is designed to support the creative writing application. User accounts and settings are stored separately to allow for independent updates and queries. Story texts are stored as subcollections under each user, enabling easy management and retrieval of user-specific stories. This design adheres to the principle of Authorization Independence. Each story text is associated with its story ID and user ID to avoid relying on parent document data for authorization. The segregation between user accounts, settings, and story content is a core element in achieving a homogeneous security posture, enabling straightforward security rules.\n\nThe structure uses path-based ownership for user-owned data (stories), i.e., `/users/{userId}/stories/{storyId}` and then nests additional story information under that structure. This structure facilitates simple, robust security rules. For example, reading a story requires only checking that the request's authentication UID matches the `userId` path segment.\n\nThis design achieves Authorization Independence by avoiding hierarchical authorization dependencies (`get()`). Each document contains all the necessary information to make authorization decisions based on `request.auth.uid` and the document's path, and easily supports the required QAPs (using segregation and/or membership models)."
+  }
+}
