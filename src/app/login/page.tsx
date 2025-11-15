@@ -1,0 +1,127 @@
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import { useUser } from '@/firebase';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+const loginSchema = z.object({
+  email: z.string().email('Voer een geldig e-mailadres in.'),
+  password: z.string().min(6, 'Wachtwoord moet minimaal 6 karakters lang zijn.'),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
+export default function LoginPage() {
+  const router = useRouter();
+  const auth = useAuth();
+  const { user, isUserLoading } = useUser();
+  const { toast } = useToast();
+  const [error, setError] = useState<string | null>(null);
+
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+  
+  useEffect(() => {
+    if (!isUserLoading && user) {
+      router.push('/');
+    }
+  }, [user, isUserLoading, router]);
+
+  const { isSubmitting } = form.formState;
+
+  async function onSubmit(values: LoginFormValues) {
+    setError(null);
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password);
+      toast({
+        title: 'Succesvol ingelogd!',
+        description: 'Je wordt doorgestuurd.',
+      });
+      router.push('/');
+    } catch (e: any) {
+      setError('Inloggegevens onjuist. Probeer het opnieuw.');
+    }
+  }
+
+  if (isUserLoading || user) {
+    return <div className="flex h-screen items-center justify-center">Laden...</div>;
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-headline">Welkom terug!</CardTitle>
+          <CardDescription>Log in op je World Weaver account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>E-mailadres</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="jouw@email.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Wachtwoord</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? 'Bezig...' : 'Inloggen'}
+              </Button>
+            </form>
+          </Form>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Nog geen account?{' '}
+            <Link href="/signup" className="font-semibold text-primary hover:underline">
+              Maak een account aan
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
