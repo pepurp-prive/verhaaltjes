@@ -4,10 +4,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import Link from 'next/link';
 import { Menu, Pen, Users, BookOpenText, Home } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
@@ -71,15 +71,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   </TooltipTrigger>
                   <TooltipContent side="right"><p>Mijn Verhalen</p></TooltipContent>
                 </Tooltip>
+                <DropdownMenuSeparator className="bg-green-600/50 h-[1px] my-2" />
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
 
         <main className="max-w-4xl mx-auto pl-12">
-            <Card className="rounded-2xl shadow-lg">
+            <div className="rounded-2xl shadow-lg bg-card">
               {children}
-            </Card>
+            </div>
         </main>
       </div>
     </TooltipProvider>
