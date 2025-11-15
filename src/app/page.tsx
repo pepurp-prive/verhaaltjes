@@ -45,7 +45,7 @@ export default function Home() {
             description="Lees, bewerk en vervolg je opgeslagen verhalen."
           />
 
-          <Card className="p-6 rounded-2xl shadow-lg border-transparent">
+          <Card className="flex flex-col p-6 rounded-2xl shadow-lg border-transparent">
              <CardHeader className="p-0 mb-4 text-left">
                 <CardTitle className="text-xl font-semibold text-foreground font-headline">
                   Inloggen / Account
@@ -54,7 +54,7 @@ export default function Home() {
                   Log in om je werk op te slaan.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="p-0 flex-grow flex flex-col justify-center">
                 <LoginForm />
               </CardContent>
           </Card>
