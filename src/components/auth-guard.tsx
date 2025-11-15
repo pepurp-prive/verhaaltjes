@@ -1,17 +1,18 @@
 'use client';
 
-import { useUser } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
+import { signInAnonymously } from 'firebase/auth';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isUserLoading } = useUser();
+  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      // If user is not loaded and not authenticated, redirect to login page.
       router.push('/login');
     }
   }, [isUserLoading, user, router]);

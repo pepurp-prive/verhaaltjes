@@ -85,11 +85,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </TooltipProvider>
         </div>
 
-        <div className="max-w-4xl pl-20">
+        <main className="max-w-4xl mx-auto pl-12">
             <Card className="rounded-2xl shadow-lg">
-              <main>{children}</main>
+              {children}
             </Card>
-        </div>
+        </main>
       </div>
   );
 }
