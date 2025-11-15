@@ -71,7 +71,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   </TooltipTrigger>
                   <TooltipContent side="right"><p>Mijn Verhalen</p></TooltipContent>
                 </Tooltip>
-                <DropdownMenuSeparator className="bg-green-600/50 h-[1px] my-2 w-1/4 mx-auto" />
+                <DropdownMenuSeparator className="bg-green-600/50 h-[1px] my-2 w-1/4" />
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
