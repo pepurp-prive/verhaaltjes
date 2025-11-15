@@ -4,7 +4,7 @@ import { useAuth, useUser } from '@/firebase';
 import { LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { DropdownMenuItem, DropdownMenuSeparator } from './ui/dropdown-menu';
+import { DropdownMenuItem } from './ui/dropdown-menu';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 export function UserActions() {
@@ -25,7 +25,6 @@ export function UserActions() {
 
   return (
     <>
-      <DropdownMenuSeparator />
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuItem asChild className="focus:bg-transparent">
