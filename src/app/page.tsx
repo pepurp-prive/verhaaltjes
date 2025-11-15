@@ -45,7 +45,7 @@ export default function Home() {
             title="Mijn Verhalen"
             description="Lees, bewerk en vervolg je opgeslagen verhalen."
           />
-           <Card className="p-6 rounded-2xl shadow-lg border-transparent">
+           <Card className="h-full p-6 rounded-2xl shadow-lg border-transparent">
             <CardHeader className="p-0 mb-4 text-left">
               <CardTitle className="text-xl font-semibold text-foreground font-headline">
                 Inloggen / Account

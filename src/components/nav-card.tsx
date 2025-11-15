@@ -25,7 +25,7 @@ export function NavCard({
   const content = (
     <Card
       className={cn(
-        'text-left p-6 rounded-2xl shadow-lg border-transparent hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1',
+        'h-full text-left p-6 rounded-2xl shadow-lg border-transparent hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1',
         disabled && 'opacity-50 cursor-not-allowed hover:transform-none hover:shadow-lg hover:border-transparent'
       )}
     >
