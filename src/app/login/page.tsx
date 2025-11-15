@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/firebase';
-import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence, signInAnonymously } from 'firebase/auth';
 import { useState, useEffect } from 'react';
 import { useUser } from '@/firebase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -48,7 +48,7 @@ export default function LoginPage() {
   });
   
   useEffect(() => {
-    if (!isUserLoading && user && !user.isAnonymous) {
+    if (!isUserLoading && user) {
       router.push('/');
     }
   }, [user, isUserLoading, router]);
@@ -71,10 +71,15 @@ export default function LoginPage() {
   }
   
   async function handleAnonymousLogin() {
-    router.push('/');
+    try {
+      await signInAnonymously(auth);
+      router.push('/');
+    } catch (e) {
+      setError('Kon niet anoniem inloggen. Probeer het later opnieuw.');
+    }
   }
 
-  if (isUserLoading || (user && !user.isAnonymous)) {
+  if (isUserLoading || user) {
     return <div className="flex h-screen items-center justify-center">Laden...</div>;
   }
 

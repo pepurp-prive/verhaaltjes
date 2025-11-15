@@ -1,28 +1,20 @@
 'use client';
 
-import { useAuth, useUser } from '@/firebase';
+import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
-import { signInAnonymously } from 'firebase/auth';
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const { user, isUserLoading } = useUser();
-  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     if (!isUserLoading && !user) {
-      // Automatically sign in anonymously for development purposes
-      // This avoids having to log in manually every time.
-      signInAnonymously(auth).catch((error) => {
-        console.error("Anonymous sign-in failed:", error);
-        // If anon sign-in fails, redirect to login.
-        // This might happen if anonymous auth is disabled in Firebase.
-        router.push('/login');
-      });
+      // If user is not loaded and not authenticated, redirect to login page.
+      router.push('/login');
     }
-  }, [isUserLoading, user, auth, router]);
+  }, [isUserLoading, user, router]);
 
   if (isUserLoading || !user) {
     return (
