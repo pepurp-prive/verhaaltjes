@@ -9,13 +9,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users, Settings, LogOut } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Menu, Pen, Users, Settings, LogOut, BookOpenText } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
+import { Tooltip, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
+    <TooltipProvider>
       <div className="relative p-4 sm:p-6 lg:p-8">
         <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
             <DropdownMenu>
@@ -30,24 +31,27 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <DropdownMenuItem asChild>
-                  <Link href="/story/create" className="flex items-center gap-2">
-                    <Pen className="h-4 w-4" />
-                    <span>Verhaal Maken</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/characters/overview" className="flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    <span>Mijn Personages</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/story/overview" className="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-open-text h-4 w-4"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><path d="M6 8h2"/><path d="M6 12h2"/><path d="M16 8h2"/><path d="M16 12h2"/></svg>
-                    <span>Mijn Verhalen</span>
-                  </Link>
-                </DropdownMenuItem>
+                <TooltipTrigger asChild>
+                    <DropdownMenuItem asChild>
+                      <Link href="/story/create">
+                        <Pen className="h-5 w-5 text-green-600" />
+                      </Link>
+                    </DropdownMenuItem>
+                </TooltipTrigger>
+                 <TooltipTrigger asChild>
+                    <DropdownMenuItem asChild>
+                      <Link href="/characters/overview">
+                        <Users className="h-5 w-5 text-green-600" />
+                      </Link>
+                    </DropdownMenuItem>
+                 </TooltipTrigger>
+                 <TooltipTrigger asChild>
+                    <DropdownMenuItem asChild>
+                       <Link href="/story/overview">
+                        <BookOpenText className="h-5 w-5 text-green-600"/>
+                      </Link>
+                    </DropdownMenuItem>
+                 </TooltipTrigger>
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
@@ -59,5 +63,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Card>
         </main>
       </div>
+    </TooltipProvider>
   );
 }
