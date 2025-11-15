@@ -25,11 +25,11 @@ export function NavCard({
   const content = (
     <Card
       className={cn(
-        'text-left p-6 rounded-2xl shadow-lg border-transparent hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1',
+        'text-left p-6 rounded-2xl shadow-lg border-transparent hover:shadow-xl hover:border-primary transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col',
         disabled && 'opacity-50 cursor-not-allowed hover:transform-none hover:shadow-lg hover:border-transparent'
       )}
     >
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex-grow">
         <div className="flex items-start justify-between">
           <div>
             <div className={cn('p-2 rounded-lg inline-block mb-3', iconBgClass)}>
@@ -49,5 +49,5 @@ export function NavCard({
     return <div className="cursor-not-allowed">{content}</div>;
   }
 
-  return <Link href={href}>{content}</Link>;
+  return <Link href={href} className="h-full">{content}</Link>;
 }
