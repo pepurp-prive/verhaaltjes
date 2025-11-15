@@ -171,7 +171,7 @@ function SettingsContent() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecteer privacy" />
-                      </SelectTrigger>
+                      </Trigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="public">Publiek</SelectItem>
