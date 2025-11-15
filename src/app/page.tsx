@@ -1,7 +1,8 @@
+import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
 import { Book, Users, Pen, Circle } from 'lucide-react';
 
-export default function Home() {
+function HomeContent() {
   return (
     <main className="max-w-4xl mx-auto p-4 md:p-8">
       <header className="text-center mb-12">
@@ -54,3 +55,11 @@ export default function Home() {
     </main>
   );
 }
+
+
+export default function Home() {
+  return (
+    <AppLayout>
+      <HomeContent />
+    </AppLayout>
+  )

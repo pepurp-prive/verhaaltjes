@@ -7,36 +7,12 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users, BookOpen, Settings, LogOut } from 'lucide-react';
+import { Menu, Pen, Users } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { AuthGuard } from '@/components/auth-guard';
-import { useAuth } from '@/firebase';
-
-function UserActions() {
-  const auth = useAuth();
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-          <DropdownMenuItem asChild>
-          <button
-              onClick={() => auth.signOut()}
-              className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline w-full"
-          >
-              <LogOut className="h-6 w-6" />
-              <span className="sr-only">Uitloggen</span>
-          </button>
-          </DropdownMenuItem>
-      </TooltipTrigger>
-      <TooltipContent side="right">
-        <p>Uitloggen</p>
-      </TooltipContent>
-    </Tooltip>
-  )
-}
+import { UserActions } from '@/components/user-actions';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthGuard>
       <div className="relative p-4 sm:p-6 lg:p-8">
         <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
           <TooltipProvider>
@@ -103,22 +79,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     <p>Mijn Verhalen</p>
                   </TooltipContent>
                 </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                      <DropdownMenuItem asChild>
-                      <Link
-                          href="/settings"
-                          className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
-                      >
-                          <Settings className="h-6 w-6" />
-                          <span className="sr-only">Instellingen</span>
-                      </Link>
-                      </DropdownMenuItem>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">
-                    <p>Instellingen</p>
-                  </TooltipContent>
-                </Tooltip>
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
@@ -131,6 +91,5 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </Card>
         </div>
       </div>
-    </AuthGuard>
   );
 }

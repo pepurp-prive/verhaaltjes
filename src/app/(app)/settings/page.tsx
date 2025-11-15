@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { updateDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { FormSection } from '@/components/form-section';
+import { AuthGuard } from '@/components/auth-guard';
 
 const settingsSchema = z.object({
   theme: z.enum(['light', 'dark', 'system']),
@@ -40,7 +41,7 @@ const settingsSchema = z.object({
 
 type SettingsFormValues = z.infer<typeof settingsSchema>;
 
-export default function SettingsPage() {
+function SettingsContent() {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -170,44 +171,4 @@ export default function SettingsPage() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecteer privacy" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="private">Privé</SelectItem>
-                      <SelectItem value="public">Publiek</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    Stel de standaard privacy in voor nieuwe verhalen.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="defaultCharacterArchetype"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Standaard Personage Archetype</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Bijv. Held, Anti-held" {...field} />
-                  </FormControl>
-                   <FormDescription>
-                    Stel een standaard archetype in voor nieuwe personages.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </FormSection>
-
-          <Button type="submit" disabled={isSaving}>
-            {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isSaving ? 'Opslaan...' : 'Wijzigingen Opslaan'}
-          </Button>
-        </form>
-      </Form>
-    </div>
-  );
-}
+                      </T
