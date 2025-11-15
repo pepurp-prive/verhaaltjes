@@ -105,7 +105,6 @@ const characterFormSchema = z.object({
 type CharacterFormValues = z.infer<typeof characterFormSchema>;
 
 function CharacterEditForm({ params }: { params: { id: string } }) {
-  const { id: characterId } = use(params);
   const router = useRouter();
   const [isSaving, setIsSaving] = useState(false);
   const [character, setCharacter] = useState<Character | null>(null);
@@ -119,14 +118,16 @@ function CharacterEditForm({ params }: { params: { id: string } }) {
       isSexyLingerie: false,
     },
   });
-
+  
   useEffect(() => {
-    const foundCharacter = mockCharacters.find(c => c.id === characterId);
-    if (foundCharacter) {
-      setCharacter(foundCharacter);
-      form.reset(foundCharacter);
+    if (params.id) {
+      const foundCharacter = mockCharacters.find(c => c.id === params.id);
+      if (foundCharacter) {
+        setCharacter(foundCharacter);
+        form.reset(foundCharacter);
+      }
     }
-  }, [characterId, form]);
+  }, [params.id, form]);
 
   const { watch, setValue, getValues } = form;
   const gender = watch('gender');
@@ -206,7 +207,7 @@ function CharacterEditForm({ params }: { params: { id: string } }) {
     try {
       const response = await generateCharacterDetails(data);
 
-      const charIndex = mockCharacters.findIndex(c => c.id === characterId);
+      const charIndex = mockCharacters.findIndex(c => c.id === params.id);
       if (charIndex !== -1) {
         mockCharacters[charIndex] = { 
             ...mockCharacters[charIndex], 
@@ -334,7 +335,12 @@ function CharacterEditForm({ params }: { params: { id: string } }) {
 
             <Separator />
             
-            <FormSection title="2. Uiterlijk">
+            <FormSection title="2. Uiterlijk" action={
+              <AiButton
+                tooltip="Genereer hele categorie"
+                onClick={() => handleAiCategory('appearance-section')}
+              />
+            }>
                 <div className="flex items-center space-x-2">
                     <FormField control={form.control} name="lengthM" render={({ field }) => (
                         <FormItem className="flex-1"><FormLabel>Lengte (m)</FormLabel><FormControl><Input type="number" placeholder="1" {...field} /></FormControl></FormItem>
@@ -764,7 +770,6 @@ function CharacterEditForm({ params }: { params: { id: string } }) {
 }
 
 export default function CharacterEditPage({ params }: { params: { id: string } }) {
-  return <CharacterEditForm params={params} />;
+  const resolvedParams = use(params);
+  return <CharacterEditForm params={resolvedParams} />;
 }
-
-    

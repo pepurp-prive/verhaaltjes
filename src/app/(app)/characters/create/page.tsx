@@ -310,7 +310,12 @@ export default function CharacterCreatePage() {
 
             <Separator />
             
-            <FormSection title="2. Uiterlijk">
+            <FormSection title="2. Uiterlijk" action={
+              <AiButton
+                tooltip="Genereer hele categorie"
+                onClick={() => handleAiCategory('appearance-section')}
+              />
+            }>
                 <div className="flex items-center space-x-2">
                     <FormField control={form.control} name="lengthM" render={({ field }) => (
                         <FormItem className="flex-1"><FormLabel>Lengte (m)</FormLabel><FormControl><Input type="number" placeholder="1" {...field} /></FormControl></FormItem>
