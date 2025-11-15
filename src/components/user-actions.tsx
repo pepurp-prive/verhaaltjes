@@ -1,11 +1,13 @@
 'use client';
 
 import { useAuth, useUser } from '@/firebase';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, User as UserIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DropdownMenuItem } from './ui/dropdown-menu';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+
 
 export function UserActions() {
   const { user, isUserLoading } = useUser();
@@ -29,6 +31,24 @@ export function UserActions() {
 
   return (
     <>
+      {user && !user.isAnonymous && (
+         <Tooltip>
+            <TooltipTrigger asChild>
+                <DropdownMenuItem asChild className="focus:bg-transparent">
+                     <Link href="/profile">
+                        <Avatar className="h-7 w-7">
+                            <AvatarImage src={user.photoURL || ''} alt={user.displayName || 'User'} />
+                            <AvatarFallback className="bg-muted">
+                                <UserIcon className="h-5 w-5 text-muted-foreground" />
+                            </AvatarFallback>
+                        </Avatar>
+                     </Link>
+                </DropdownMenuItem>
+            </TooltipTrigger>
+            <TooltipContent side="right"><p>Profiel</p></TooltipContent>
+        </Tooltip>
+      )}
+
       <Tooltip>
         <TooltipTrigger asChild>
           <DropdownMenuItem asChild className="focus:bg-transparent">
