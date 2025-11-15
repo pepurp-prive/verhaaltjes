@@ -34,8 +34,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 href="/story/create"
                 className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
               >
-                <Pen className="h-4 w-4" />
-                <span>Verhaal Maken</span>
+                <Pen className="h-6 w-6" />
+                <span className="sr-only">Verhaal Maken</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
@@ -43,8 +43,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 href="/characters/overview"
                 className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
               >
-                <Users className="h-4 w-4" />
-                <span>Mijn Personages</span>
+                <Users className="h-6 w-6" />
+                <span className="sr-only">Mijn Personages</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
@@ -52,8 +52,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 href="/story/overview"
                 className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
               >
-                <Book className="h-4 w-4" />
-                <span>Mijn Verhalen</span>
+                <Book className="h-6 w-6" />
+                <span className="sr-only">Mijn Verhalen</span>
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
