@@ -30,7 +30,7 @@ function CharacterCard({ character }: { character: Character }) {
           </h3>
         </div>
         <div className="space-y-2 text-sm text-foreground/80">
-          <p className="italic">
+          <p className="italic font-sans">
             {description}
           </p>
         </div>
