@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { Menu, Pen, Users, BookOpenText, Home } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { AuthStatus } from '@/components/auth-status';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -77,6 +78,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
+        <AuthStatus />
 
         <main className="max-w-4xl mx-auto pl-12">
             <div className="rounded-2xl shadow-lg bg-card">
