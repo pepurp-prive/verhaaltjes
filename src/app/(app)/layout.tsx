@@ -9,9 +9,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users, Settings, LogOut, BookOpenText } from 'lucide-react';
+import { Menu, Pen, Users, BookOpenText } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
-import { Tooltip, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -31,27 +31,36 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
-                <TooltipTrigger asChild>
+                <Tooltip>
+                  <TooltipTrigger asChild>
                     <DropdownMenuItem asChild>
                       <Link href="/story/create">
                         <Pen className="h-5 w-5 text-green-600" />
                       </Link>
                     </DropdownMenuItem>
-                </TooltipTrigger>
-                 <TooltipTrigger asChild>
+                  </TooltipTrigger>
+                  <TooltipContent side="right"><p>Nieuw Verhaal</p></TooltipContent>
+                </Tooltip>
+                 <Tooltip>
+                  <TooltipTrigger asChild>
                     <DropdownMenuItem asChild>
                       <Link href="/characters/overview">
                         <Users className="h-5 w-5 text-green-600" />
                       </Link>
                     </DropdownMenuItem>
-                 </TooltipTrigger>
-                 <TooltipTrigger asChild>
+                  </TooltipTrigger>
+                  <TooltipContent side="right"><p>Mijn Personages</p></TooltipContent>
+                </Tooltip>
+                 <Tooltip>
+                  <TooltipTrigger asChild>
                     <DropdownMenuItem asChild>
                        <Link href="/story/overview">
                         <BookOpenText className="h-5 w-5 text-green-600"/>
                       </Link>
                     </DropdownMenuItem>
-                 </TooltipTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="right"><p>Mijn Verhalen</p></TooltipContent>
+                </Tooltip>
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
