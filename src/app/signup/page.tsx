@@ -9,12 +9,14 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, useFirestore } from '@/firebase';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
@@ -27,6 +29,13 @@ import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 const signupSchema = z.object({
   email: z.string().email('Voer een geldig e-mailadres in.'),
   password: z.string().min(6, 'Wachtwoord moet minimaal 6 karakters lang zijn.'),
+  confirmPassword: z.string(),
+  isEighteenPlus: z.boolean().refine(val => val === true, {
+    message: 'Je moet bevestigen dat je 18 jaar of ouder bent.',
+  }),
+}).refine(data => data.password === data.confirmPassword, {
+  message: 'Wachtwoorden komen niet overeen.',
+  path: ['confirmPassword'],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -44,11 +53,13 @@ export default function SignupPage() {
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
+      isEighteenPlus: false,
     },
   });
 
   useEffect(() => {
-    if (!isUserLoading && user) {
+    if (!isUserLoading && user && !user.isAnonymous) {
       router.push('/');
     }
   }, [user, isUserLoading, router]);
@@ -92,10 +103,9 @@ export default function SignupPage() {
     }
   }
   
-  if (isUserLoading || user) {
+  if (isUserLoading || (user && !user.isAnonymous)) {
     return <div className="flex h-screen items-center justify-center">Laden...</div>;
   }
-
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
@@ -130,6 +140,42 @@ export default function SignupPage() {
                       <Input type="password" placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bevestig Wachtwoord</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+               <FormField
+                control={form.control}
+                name="isEighteenPlus"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Ik ben 18 jaar of ouder
+                      </FormLabel>
+                      <FormDescription>
+                        Je moet 18+ zijn om een account aan te maken.
+                      </FormDescription>
+                       <FormMessage />
+                    </div>
                   </FormItem>
                 )}
               />
