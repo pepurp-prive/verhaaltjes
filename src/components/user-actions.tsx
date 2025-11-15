@@ -22,16 +22,16 @@ export function UserActions() {
     return null; // Or a loading spinner
   }
 
-  if (user && !user.isAnonymous) {
-    return (
-      <>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/settings" className="flex items-center gap-2">
-            <Settings className="h-4 w-4" />
-            <span>Instellingen</span>
-          </Link>
-        </DropdownMenuItem>
+  return (
+    <>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem asChild>
+        <Link href="/settings" className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          <span>Instellingen</span>
+        </Link>
+      </DropdownMenuItem>
+      {user && !user.isAnonymous ? (
         <DropdownMenuItem
           onClick={handleLogout}
           className="flex items-center gap-2 cursor-pointer"
@@ -39,19 +39,14 @@ export function UserActions() {
           <LogOut className="h-4 w-4" />
           <span>Uitloggen</span>
         </DropdownMenuItem>
-      </>
-    );
-  }
-
-  return (
-    <>
-        <DropdownMenuSeparator />
+      ) : (
         <DropdownMenuItem asChild>
-            <Link href="/login" className="flex items-center gap-2">
-                <LogOut className="h-4 w-4 -scale-x-100" />
-                <span>Inloggen</span>
-            </Link>
+          <Link href="/login" className="flex items-center gap-2">
+            <LogOut className="h-4 w-4 -scale-x-100" />
+            <span>Inloggen</span>
+          </Link>
         </DropdownMenuItem>
+      )}
     </>
   );
 }
