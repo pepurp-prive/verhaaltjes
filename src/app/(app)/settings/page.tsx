@@ -171,4 +171,61 @@ function SettingsContent() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecteer privacy" />
-                      </T
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="public">Publiek</SelectItem>
+                      <SelectItem value="private">Privé</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Kies de standaard zichtbaarheid voor nieuwe verhalen.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="defaultCharacterArchetype"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Standaard Personage Archetype</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Bijv. Held, Anti-held" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Je favoriete archetype om als basis te gebruiken.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormSection>
+
+          <div className="flex justify-end pt-4">
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Opslaan...
+                </>
+              ) : (
+                'Instellingen Opslaan'
+              )}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </div>
+  );
+}
+
+
+export default function SettingsPage() {
+    return (
+        <AuthGuard>
+            <SettingsContent />
+        </AuthGuard>
+    )
+}
