@@ -89,7 +89,7 @@ export function LoginForm({ showRememberMe = false, showGuestLogin = false }: Lo
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">E-mailadres</FormLabel>
+                <FormLabel>E-mailadres</FormLabel>
                 <FormControl>
                   <Input type="email" placeholder="jouw@email.com" {...field} />
                 </FormControl>
@@ -102,7 +102,7 @@ export function LoginForm({ showRememberMe = false, showGuestLogin = false }: Lo
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">Wachtwoord</FormLabel>
+                <FormLabel>Wachtwoord</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder="Wachtwoord" {...field} />
                 </FormControl>

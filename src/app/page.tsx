@@ -1,8 +1,6 @@
 import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
-import { Book, Users, Pen } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { LoginForm } from "@/components/login-form";
+import { Book, Users, Pen, LogIn } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -44,19 +42,14 @@ export default function Home() {
             title="Mijn Verhalen"
             description="Lees, bewerk en vervolg je opgeslagen verhalen."
           />
-           <Card className="p-6 rounded-2xl shadow-lg border-transparent flex flex-col h-full">
-                <CardHeader className="p-0 mb-4 text-left">
-                    <CardTitle className="text-xl font-semibold text-foreground font-headline">
-                        Inloggen / Account
-                    </CardTitle>
-                    <CardDescription>
-                        Log in om je werk op te slaan.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="p-0 flex-grow flex flex-col">
-                   <LoginForm />
-                </CardContent>
-            </Card>
+           <NavCard
+            href="/login"
+            icon={<LogIn />}
+            iconBgClass="bg-purple-100 dark:bg-purple-900/50"
+            iconTextClass="text-purple-700 dark:text-purple-300"
+            title="Inloggen / Account"
+            description="Log in om je werk op te slaan."
+          />
         </div>
       </main>
     </AppLayout>
