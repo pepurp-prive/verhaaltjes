@@ -43,12 +43,12 @@ export default function Home() {
             description="Lees, bewerk en vervolg je opgeslagen verhalen."
           />
            <NavCard
-            href="/login"
+            href="/settings"
             icon={<LogIn />}
             iconBgClass="bg-purple-100 dark:bg-purple-900/50"
             iconTextClass="text-purple-700 dark:text-purple-300"
-            title="Inloggen / Account"
-            description="Log in om je werk op te slaan en te beheren."
+            title="Instellingen"
+            description="Beheer je account- en app-voorkeuren."
           />
         </div>
       </main>
