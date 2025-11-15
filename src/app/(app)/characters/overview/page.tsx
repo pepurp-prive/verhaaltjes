@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -15,6 +16,8 @@ function CharacterCard({ character }: { character: Character }) {
     ? 'text-blue-500' 
     : 'text-pink-500';
 
+  const description = `${character.name} is een ${character.age}-jarige ${character.job.toLowerCase()} die in ${character.location} woont.`;
+
   return (
     <Card className="flex flex-col rounded-2xl shadow-lg border-gray-200/50 dark:border-gray-800/50 overflow-hidden h-full">
       <CardContent className="p-6 flex-grow">
@@ -26,12 +29,9 @@ function CharacterCard({ character }: { character: Character }) {
             {character.name}
           </h3>
         </div>
-        <div className="space-y-1 text-sm text-foreground/80">
-          <p>
-            <span className="font-medium">Leeftijd:</span> {character.age}
-          </p>
-          <p>
-            <span className="font-medium">Beroep:</span> {character.job}
+        <div className="space-y-2 text-sm text-foreground/80">
+          <p className="italic">
+            {description}
           </p>
         </div>
       </CardContent>
