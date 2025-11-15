@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative p-4 sm:p-6 lg:p-8">
-      {/* <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -58,7 +58,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </div> */}
+      </div>
 
       <div className="max-w-4xl pl-20">
           <Card className="rounded-2xl shadow-lg">
