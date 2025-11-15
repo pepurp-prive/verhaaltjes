@@ -4,8 +4,7 @@ import { useAuth, useUser } from '@/firebase';
 import { LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { DropdownMenuItem } from './ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { DropdownMenuItem, DropdownMenuSeparator } from './ui/dropdown-menu';
 
 export function UserActions() {
   const { user, isUserLoading } = useUser();
@@ -13,7 +12,9 @@ export function UserActions() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await auth.signOut();
+    if (auth) {
+        await auth.signOut();
+    }
     router.push('/login');
   };
 
@@ -24,39 +25,33 @@ export function UserActions() {
   if (user && !user.isAnonymous) {
     return (
       <>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenuItem asChild>
-              <Link
-                href="/settings"
-                className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
-              >
-                <Settings className="h-6 w-6" />
-                <span className="sr-only">Instellingen</span>
-              </Link>
-            </DropdownMenuItem>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <p>Instellingen</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline cursor-pointer"
-            >
-              <LogOut className="h-6 w-6" />
-              <span className="sr-only">Uitloggen</span>
-            </DropdownMenuItem>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <p>Uitloggen</p>
-          </TooltipContent>
-        </Tooltip>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Link href="/settings" className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            <span>Instellingen</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={handleLogout}
+          className="flex items-center gap-2 cursor-pointer"
+        >
+          <LogOut className="h-4 w-4" />
+          <span>Uitloggen</span>
+        </DropdownMenuItem>
       </>
     );
   }
 
-  return null; // Don't show login/signup in this menu
+  return (
+    <>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+            <Link href="/login" className="flex items-center gap-2">
+                <LogOut className="h-4 w-4 -scale-x-100" />
+                <span>Inloggen</span>
+            </Link>
+        </DropdownMenuItem>
+    </>
+  );
 }

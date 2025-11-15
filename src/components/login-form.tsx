@@ -31,7 +31,7 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-export function LoginForm({ showSignupLink = false }: { showSignupLink?: boolean }) {
+export function LoginForm({ showSignupLink = false, isCompact = false }: { showSignupLink?: boolean, isCompact?: boolean }) {
   const router = useRouter();
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
@@ -49,10 +49,10 @@ export function LoginForm({ showSignupLink = false }: { showSignupLink?: boolean
   
   useEffect(() => {
     // Redirect if user is logged in (and not anonymous)
-    if (!isUserLoading && user && !user.isAnonymous) {
+    if (!isUserLoading && user && !user.isAnonymous && !showSignupLink) {
       router.push('/');
     }
-  }, [user, isUserLoading, router]);
+  }, [user, isUserLoading, router, showSignupLink]);
 
   const { isSubmitting } = form.formState;
 
@@ -105,7 +105,7 @@ export function LoginForm({ showSignupLink = false }: { showSignupLink?: boolean
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">E-mailadres</FormLabel>
+                <FormLabel className={isCompact ? "sr-only" : ""}>E-mailadres</FormLabel>
                 <FormControl>
                   <Input type="email" placeholder="E-mailadres" {...field} />
                 </FormControl>
@@ -118,7 +118,7 @@ export function LoginForm({ showSignupLink = false }: { showSignupLink?: boolean
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="sr-only">Wachtwoord</FormLabel>
+                <FormLabel className={isCompact ? "sr-only" : ""}>Wachtwoord</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder="Wachtwoord" {...field} />
                 </FormControl>
