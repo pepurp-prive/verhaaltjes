@@ -1,6 +1,6 @@
 import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
-import { Book, Users, Pen, Circle } from 'lucide-react';
+import { Book, Users, Pen, LogIn } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -44,13 +44,12 @@ export default function Home() {
           />
 
           <NavCard
-            href="#"
-            icon={<Circle />}
-            iconBgClass="bg-gray-100 dark:bg-gray-800"
-            iconTextClass="text-gray-500"
-            title="..."
-            description="..."
-            disabled
+            href="/login"
+            icon={<LogIn />}
+            iconBgClass="bg-purple-100 dark:bg-purple-900/50"
+            iconTextClass="text-purple-700 dark:text-purple-300"
+            title="Inloggen / Account"
+            description="Log in of maak een account aan voor meer opties."
           />
         </div>
       </main>
