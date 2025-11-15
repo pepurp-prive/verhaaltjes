@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users, BookOpenText } from 'lucide-react';
+import { Menu, Pen, Users, BookOpenText, Home } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
@@ -30,10 +30,20 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
+              <DropdownMenuContent align="start" className="bg-transparent border-none shadow-none">
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild className="focus:bg-transparent">
+                      <Link href="/">
+                        <Home className="h-5 w-5 text-green-600" />
+                      </Link>
+                    </DropdownMenuItem>
+                  </TooltipTrigger>
+                  <TooltipContent side="right"><p>Startpagina</p></TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuItem asChild className="focus:bg-transparent">
                       <Link href="/story/create">
                         <Pen className="h-5 w-5 text-green-600" />
                       </Link>
@@ -43,7 +53,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </Tooltip>
                  <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild className="focus:bg-transparent">
                       <Link href="/characters/overview">
                         <Users className="h-5 w-5 text-green-600" />
                       </Link>
@@ -53,7 +63,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </Tooltip>
                  <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuItem asChild>
+                    <DropdownMenuItem asChild className="focus:bg-transparent">
                        <Link href="/story/overview">
                         <BookOpenText className="h-5 w-5 text-green-600"/>
                       </Link>

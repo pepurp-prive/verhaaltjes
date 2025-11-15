@@ -5,6 +5,7 @@ import { LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DropdownMenuItem, DropdownMenuSeparator } from './ui/dropdown-menu';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 
 export function UserActions() {
   const { user, isUserLoading } = useUser();
@@ -25,27 +26,40 @@ export function UserActions() {
   return (
     <>
       <DropdownMenuSeparator />
-      <DropdownMenuItem asChild>
-        <Link href="/settings" className="flex items-center gap-2">
-          <Settings className="h-4 w-4" />
-          <span>Instellingen</span>
-        </Link>
-      </DropdownMenuItem>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuItem asChild className="focus:bg-transparent">
+            <Link href="/settings">
+              <Settings className="h-5 w-5 text-green-600" />
+            </Link>
+          </DropdownMenuItem>
+        </TooltipTrigger>
+        <TooltipContent side="right"><p>Instellingen</p></TooltipContent>
+      </Tooltip>
+      
       {user && !user.isAnonymous ? (
-        <DropdownMenuItem
-          onClick={handleLogout}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <LogOut className="h-4 w-4" />
-          <span>Uitloggen</span>
-        </DropdownMenuItem>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className="focus:bg-transparent cursor-pointer"
+            >
+              <LogOut className="h-5 w-5 text-green-600" />
+            </DropdownMenuItem>
+          </TooltipTrigger>
+          <TooltipContent side="right"><p>Uitloggen</p></TooltipContent>
+        </Tooltip>
       ) : (
-        <DropdownMenuItem asChild>
-          <Link href="/login" className="flex items-center gap-2">
-            <LogOut className="h-4 w-4 -scale-x-100" />
-            <span>Inloggen</span>
-          </Link>
-        </DropdownMenuItem>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuItem asChild className="focus:bg-transparent">
+              <Link href="/login">
+                <LogOut className="h-5 w-5 text-green-600 -scale-x-100" />
+              </Link>
+            </DropdownMenuItem>
+          </TooltipTrigger>
+          <TooltipContent side="right"><p>Inloggen</p></TooltipContent>
+        </Tooltip>
       )}
     </>
   );
