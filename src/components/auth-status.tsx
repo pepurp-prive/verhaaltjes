@@ -14,9 +14,9 @@ export function AuthStatus() {
 
   return (
     <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
-      {user ? (
-         <Badge variant="outline" className="text-sm">
-          {user.isAnonymous ? 'Gast' : user.email}
+      {user && !user.isAnonymous ? (
+         <Badge variant="secondary" className="text-sm border border-border">
+          {user.email}
         </Badge>
       ) : (
         <Button asChild>
