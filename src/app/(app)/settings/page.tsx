@@ -171,7 +171,7 @@ function SettingsContent() {
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Selecteer privacy" />
-                      </Trigger>
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="public">Publiek</SelectItem>
@@ -227,5 +227,5 @@ export default function SettingsPage() {
         <AuthGuard>
             <SettingsContent />
         </AuthGuard>
-    )
+    );
 }
