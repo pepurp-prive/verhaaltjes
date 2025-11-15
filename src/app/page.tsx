@@ -1,6 +1,8 @@
 import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
-import { Book, Users, Pen, LogIn } from 'lucide-react';
+import { Book, Users, Pen } from 'lucide-react';
+import { LoginForm } from "@/components/login-form";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   return (
@@ -36,21 +38,26 @@ export default function Home() {
 
           <NavCard
             href="/story/overview"
-            icon={<Book />}
+            icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-book-open-text"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/><path d="M6 8h2"/><path d="M6 12h2"/><path d="M16 8h2"/><path d="M16 12h2"/></svg>}
             iconBgClass="bg-yellow-100 dark:bg-yellow-900/50"
             iconTextClass="text-yellow-700 dark:text-yellow-300"
             title="Mijn Verhalen"
             description="Lees, bewerk en vervolg je opgeslagen verhalen."
           />
 
-          <NavCard
-            href="/login"
-            icon={<LogIn />}
-            iconBgClass="bg-purple-100 dark:bg-purple-900/50"
-            iconTextClass="text-purple-700 dark:text-purple-300"
-            title="Inloggen / Account"
-            description="Log in of maak een account aan voor meer opties."
-          />
+          <Card className="p-6 rounded-2xl shadow-lg border-transparent">
+             <CardHeader className="p-0 mb-4 text-left">
+                <CardTitle className="text-xl font-semibold text-foreground font-headline">
+                  Inloggen / Account
+                </CardTitle>
+                 <CardDescription>
+                  Log in om je werk op te slaan.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <LoginForm />
+              </CardContent>
+          </Card>
         </div>
       </main>
     </AppLayout>
