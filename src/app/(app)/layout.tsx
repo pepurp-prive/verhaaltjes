@@ -79,9 +79,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         
         <main className="max-w-4xl mx-auto pl-12">
             <div className="rounded-2xl shadow-lg bg-card">
-              <header className="p-4 flex justify-end">
-                <AuthStatus />
-              </header>
               {children}
             </div>
         </main>

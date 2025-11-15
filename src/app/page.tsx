@@ -1,10 +1,14 @@
 import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
 import { Book, Users, Pen } from 'lucide-react';
+import { AuthStatus } from "@/components/auth-status";
 
 export default function Home() {
   return (
     <AppLayout>
+      <header className="p-4 flex justify-end">
+        <AuthStatus />
+      </header>
       <main className="max-w-4xl mx-auto p-4 md:p-8">
         <header className="text-center mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground font-headline">
