@@ -7,7 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Link from 'next/link';
-import { Menu, Pen, Users, Book } from 'lucide-react';
+import { Menu, Pen, Users, BookOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -70,7 +70,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         href="/story/overview"
                         className="flex items-center gap-2 text-primary !bg-transparent hover:!bg-transparent focus:!bg-transparent hover:underline"
                     >
-                        <Book className="h-6 w-6" />
+                        <BookOpen className="h-6 w-6" />
                         <span className="sr-only">Mijn Verhalen</span>
                     </Link>
                     </DropdownMenuItem>
