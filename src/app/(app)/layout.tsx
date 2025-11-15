@@ -71,17 +71,17 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   </TooltipTrigger>
                   <TooltipContent side="right"><p>Mijn Verhalen</p></TooltipContent>
                 </Tooltip>
-                <div className="my-2 flex justify-start">
-                    <DropdownMenuSeparator className="bg-green-600/50 h-[1px] w-1/4" />
-                </div>
+                <DropdownMenuSeparator className="bg-green-600/50 h-[1px] w-1/4" />
                 <UserActions />
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
-        <AuthStatus />
-
+        
         <main className="max-w-4xl mx-auto pl-12">
             <div className="rounded-2xl shadow-lg bg-card">
+              <header className="p-4 flex justify-end">
+                <AuthStatus />
+              </header>
               {children}
             </div>
         </main>
