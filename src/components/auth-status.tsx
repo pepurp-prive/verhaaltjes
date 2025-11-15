@@ -3,6 +3,7 @@
 import { useUser } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
 
 export function AuthStatus() {
   const { user, isUserLoading } = useUser();
@@ -13,11 +14,15 @@ export function AuthStatus() {
 
   return (
     <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
-      {!user ? (
+      {user ? (
+         <Badge variant="outline" className="text-sm">
+          {user.isAnonymous ? 'Gast' : user.email}
+        </Badge>
+      ) : (
         <Button asChild>
           <Link href="/login">Inloggen / Registreren</Link>
         </Button>
-      ) : null}
+      )}
     </div>
   );
 }
