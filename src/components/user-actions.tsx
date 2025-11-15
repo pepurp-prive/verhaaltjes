@@ -19,8 +19,12 @@ export function UserActions() {
     router.push('/login');
   };
 
-  if (isUserLoading || !user) {
+  if (isUserLoading) {
     return null; // Or a loading spinner
+  }
+
+  if (!user) {
+      return null;
   }
 
   return (

@@ -12,11 +12,8 @@ import Link from 'next/link';
 import { Menu, Pen, Users, BookOpenText, Home } from 'lucide-react';
 import { UserActions } from '@/components/user-actions';
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { useUser } from '@/firebase';
-
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  const { user, isUserLoading } = useUser();
   return (
     <TooltipProvider>
       <div className="relative p-4 sm:p-6 lg:p-8">
@@ -80,14 +77,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuContent>
             </DropdownMenu>
         </div>
-        
-        {!isUserLoading && !user && (
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8">
-            <Button asChild>
-              <Link href="/login">Inloggen / Registreren</Link>
-            </Button>
-          </div>
-        )}
 
         <main className="max-w-4xl mx-auto pl-12">
             <div className="rounded-2xl shadow-lg bg-card">

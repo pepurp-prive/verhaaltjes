@@ -1,10 +1,12 @@
 import AppLayout from "./(app)/layout";
 import { NavCard } from '@/components/nav-card';
-import { Book, Users, Pen, LogIn } from 'lucide-react';
+import { Book, Users, Pen } from 'lucide-react';
+import { AuthStatus } from '@/components/auth-status';
 
 export default function Home() {
   return (
     <AppLayout>
+       <AuthStatus />
       <main className="max-w-4xl mx-auto p-4 md:p-8">
         <header className="text-center mb-12">
           <h1 className="text-4xl lg:text-5xl font-bold text-foreground font-headline">
@@ -44,7 +46,7 @@ export default function Home() {
           />
            <NavCard
             href="/settings"
-            icon={<LogIn />}
+            icon={<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>}
             iconBgClass="bg-purple-100 dark:bg-purple-900/50"
             iconTextClass="text-purple-700 dark:text-purple-300"
             title="Instellingen"
