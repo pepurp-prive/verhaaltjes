@@ -15,7 +15,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative p-4 sm:p-6 lg:p-8">
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8">
-        <TooltipProvider delayDuration={1000}>
+        <TooltipProvider>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
