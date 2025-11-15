@@ -60,7 +60,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </DropdownMenu>
       </div> */}
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl pl-20">
           <Card className="rounded-2xl shadow-lg">
             <main>{children}</main>
           </Card>
